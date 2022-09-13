@@ -14,7 +14,7 @@ export const SidebarData = [
   },
   {
     title: "CustomerServices",
-    path: "/customerSide",
+    path: "#",
     icon: <FaIcons.FaInbox />,
     iconClosed: <IoIcons.IoIosArrowDown />,
     iconOpened: <IoIcons.IoIosArrowUp />,
@@ -22,13 +22,13 @@ export const SidebarData = [
     subMenu: [
       {
         title: "Orders",
-        path: "/customerSide/orders",
+        path: "/app/customerSide/orders",
         icon: <IoIcons.IoIosPaper />,
         cName: "subnav-element",
       },
       {
         title: "Invoices",
-        path: "/customerSide/invoices",
+        path: "/app/customerSide/invoices",
         icon: <IoIcons.IoIosPaper />,
         cName: "subnav-element",
       }
@@ -36,7 +36,7 @@ export const SidebarData = [
   },
   {
     title: "SupplierServices",
-    path: "/supplierSide",
+    path: "#",
     icon: <FaIcons.FaInbox />,
     iconClosed: <IoIcons.IoIosArrowDown />,
     iconOpened: <IoIcons.IoIosArrowUp />,
@@ -44,33 +44,27 @@ export const SidebarData = [
     subMenu: [
         {
           title: "Orders",
-          path: "/supplierSide/orders",
+          path: "/app/supplierSide/orders",
           icon: <IoIcons.IoIosPaper />,
           cName: "subnav-element",
         },
         {
           title: "Invoices",
-          path: "/supplierSide/invoices",
+          path: "/app/supplierSide/invoices",
           icon: <IoIcons.IoIosPaper />,
           cName: "subnav-element",
         }
       ],
   },
   {
-    title: "Clients",
-    path: "/clients",
-    icon: <BsIcons.BsPeopleFill />,
-    cName: "nav-element",
-  },
-  {
-    title: "Fournisseurs",
-    path: "/fournisseurs",
+    title: "Entreprises",
+    path: "/app/parties",
     icon: <BsIcons.BsPeopleFill />,
     cName: "nav-element",
   },
   {
     title: "Produits",
-    path: "/produits",
+    path: "/app/products",
     icon: <RiIcons.RiShoppingCart2Fill />,
     cName: "nav-element",
   },

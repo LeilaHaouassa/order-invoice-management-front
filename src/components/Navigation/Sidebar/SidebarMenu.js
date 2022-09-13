@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Aux from "../../hoc/Aux";
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
@@ -12,9 +12,15 @@ const SidebarMenu = ({ item , index , showSidebar }) => {
     return item.subMenu && dropdown
       ? item.iconOpened
       : item.subMenu
-      ? item.iconClosed
+      ? item.iconClosed 
       : null;
   };
+
+  //For debugging purposes 
+  //DELETE LATER
+  useEffect(() => {
+    console.log('useEffect ran. dropdown is: ', dropdown);
+  }, [dropdown]);
 
   return (
     <Aux>

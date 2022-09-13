@@ -2,13 +2,10 @@ import React from "react";
 import Aux from "../hoc/Aux";
 import Header from "../Navigation/Header/Header";
 import OrderList from "../../containers/Order/OrderList";
-import Paper from "@material-ui/core/Paper";
 import { Container, Col, Row } from "react-bootstrap";
-import { Route, Switch } from "react-router-dom";
-import Home from "../../containers/Home";
-import ProductList from "../../containers/Product/ProductList";
-import SupplierList from "../../containers/Supplier/SupplierList";
-import AddOrder from "../../containers/Order/AddOrder";
+import { Route, Routes } from "react-router-dom";
+import Main from "../../containers/Order/AddOrder/Main";
+import PartyList from "../../containers/Party/PartyList";
 
 
 const Layout = (props) => {
@@ -22,20 +19,13 @@ const Layout = (props) => {
         </Row>
         <Row>
           <Col>
-            
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route
-                  exact
-                  path="/customerSide/orders"
-                  component={OrderList}
-                />
-                <Route exact path="/customerSide/orders/add" component={AddOrder} />
-                <Route exact path="/produits" component={ProductList} />
-                <Route exact path="/fournisseurs" component={SupplierList} />
-                
-              </Switch>
-            
+            <Routes>
+              {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
+              <Route path="/customerSide/orders" element={<OrderList/>} />
+              <Route path="/customerSide/orders/add" element={<Main/>} />
+              {/* <Route path="/produits" element={<ProductList/>} /> */}
+              <Route path="/parties" element={<PartyList/>} />
+            </Routes>
           </Col>
         </Row>
       </Container>

@@ -14,7 +14,7 @@ import * as VscIcons from "react-icons/vsc";
 import * as AiIcons from "react-icons/ai";
 
 import { Button } from "@material-ui/core";
-import DeleteOrder from "./DeleteOrder";
+import DeleteOrder from "./DeleteOrder/DeleteOrder";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText("#9CC5EB"),
     backgroundColor: "#9CC5EB",
     "&:hover": {
-      backgroundColor: "#335495",
+      backgroundColor: "#DDE2DC",
       // Reset on touch devices, it doesn't add specificity
       "@media (hover: none)": {
         backgroundColor: "#9CC5EB",
@@ -85,7 +85,6 @@ const OrderList = (props) => {
           <Typography component="h2" variant="h6" gutterBottom>
             Liste des Bons de Commande:
           </Typography>
-          {console.log(props.orders)}
         </div>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
@@ -136,7 +135,7 @@ const OrderList = (props) => {
         </TableContainer>
 
         <div className={classes.distanceForAddButton}>
-          <Link to="/customerSide/orders/add">
+          <Link to="/app/customerSide/orders/add">
           <Button
             variant="contained"
             size="large"
@@ -158,11 +157,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     removeOrder: (id) =>
-//       dispatch({ type: actionTypes.ORDER_DELETED, payload: { orderId: id } }),
-//   };
-// };
 
 export default connect(mapStateToProps)(OrderList);

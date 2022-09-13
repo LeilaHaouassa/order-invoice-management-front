@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDom from "react-dom";
 import { connect } from "react-redux";
-import * as actionTypes from "../../store/actions";
+import * as actionTypes from "../../store/actions/types";
 
 
 
-function DeleteSupplier(props) {
+function DeleteParty(props) {
   return ReactDom.createPortal(
     <div className="modalBackground">
       <div className="modalContainer">
@@ -48,4 +48,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(DeleteSupplier);
+export default connect(null, mapDispatchToProps)(DeleteParty);

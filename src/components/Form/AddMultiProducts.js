@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { Box } from "@mui/system";
+
 import DropdownInput from "../../components/Form/DropdownInput";
 import productData from "../../containers/Product/ProductData";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 function AddMultiProducts() {
   const [numberOfProducts, setNumberOfProducts] = useState([]);
   const addProduct = () => {
-    const newNumberOfProducts = numberOfProducts;
+    const newNumberOfProducts = [...numberOfProducts];
     const size = newNumberOfProducts.length + 1;
     newNumberOfProducts.push(size);
     setNumberOfProducts(newNumberOfProducts);
-    console.log(numberOfProducts)
+    console.log(numberOfProducts);
   };
 
   const addProductField = (event) => {
@@ -20,52 +21,65 @@ function AddMultiProducts() {
     event.preventDefault();
   };
 
+  const showExtraProductField = () => {
+    return numberOfProducts.map((index) => {
+      return (
+        <Grid
+        item
+        xs={12}
+        key={index}
+        container
+        spacing={2}
+        direction="row"
+        justifyContent="flex-start"
+      >
+        <Grid item xs={2}>
+          <h3>Produit:</h3>
+        </Grid>
+        <Grid item xs={4}>
+          <DropdownInput name="OrderProduct" options={productData} />
+        </Grid>
+        <Grid item xs={2}>
+          <h3>Quantité:</h3>
+        </Grid>
+        <Grid item xs={4}>
+          <TextField type="number" defaultValue="1" />
+        </Grid>
+      </Grid>
+      );
+    });
+  };
+
   return (
-    <section>
-      <Box>
-        <DropdownInput
-          name="OrderProduct"
-          label="Le(s) produit(s)"
-          options={productData}
-        />
-
-        <TextField
-          label="Quantité"
-          type="number"
-          defaultValue="1"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
+    <Grid item container key={-1} spacing={2} direction="column">
+      <Grid
+        item
+        xs={12}
+        container
+        spacing={2}
+        direction="row"
+        justifyContent="flex-start"
+      >
+        <Grid item xs={2}>
+          <h3>Produit:</h3>
+        </Grid>
+        <Grid item xs={4}>
+          <DropdownInput name="OrderProduct" options={productData} />
+        </Grid>
+        <Grid item xs={2}>
+          <h3>Quantité:</h3>
+        </Grid>
+        <Grid item xs={4}>
+          <TextField type="number" defaultValue="1" />
+        </Grid>
+      </Grid>
+      {showExtraProductField()}
+      <Grid item xs={12} container justifyContent="center">
         <Button variant="outlined" color="secondary" onClick={addProduct}>
-          Ajouter un autre produit Helooooo
+          Ajouter un autre produit
         </Button>
-
-        
-
-        {numberOfProducts.map((index) => {
-          return (
-            <div key={index}>
-              <DropdownInput
-                name="OrderProduct"
-                label="Le(s) produit(s)"
-                options={productData}
-              />
-
-              <TextField
-                label="Quantité"
-                type="number"
-                defaultValue="1"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-          );
-        })}
-      </Box>
-    </section>
+      </Grid>
+    </Grid>
   );
 }
 

@@ -31,7 +31,7 @@ const DropdownInput = ({ name, label, options }) => {
 
   return (
     <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
+      
       <Controller
         label={label}
         render={({ field }) => (
@@ -40,7 +40,7 @@ const DropdownInput = ({ name, label, options }) => {
             value={selectedValue}
             onChange={handleChangeSelect}
             variant="outlined"
-            label={label}
+            
           >
             {generateOptions(options)}
           </Select>

@@ -2,7 +2,7 @@ import React from "react";
 import "./DeleteOrder.css";
 import ReactDom from "react-dom";
 import { connect } from "react-redux";
-import * as actionTypes from "../../store/actions";
+import * as actionTypes from "../../../store/actions/types";
 
 // { showDeleteModal, orderId , removeOrder }
 function DeleteOrder(props) {

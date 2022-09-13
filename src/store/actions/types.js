@@ -1,3 +1,5 @@
+export const REFRESH_TOKEN = "REFRESH_TOKEN";
+
 export const ORDER_DELETED ='ORDER_DELETED';
 export const ORDER_ADDED = 'ORDER_ADDED'; 
 
@@ -5,6 +7,8 @@ export const ORDER_ADDED = 'ORDER_ADDED';
 export const PRODUCT_DELETED = 'PRODUCT_DELETED';
 export const PRODUCT_ADDED = 'PRODUCT_ADDED';
 
+export const GET_PARTIES = 'GET_PARTIES';
+export const PARTIES_ERROR = 'PARTIES_ERROR';     
 export const SUPPLIER_DELETED= 'SUPPLIER_DELETED';
 export const SUPPLIER_ADDED = 'SUPPLIER_ADDED';
 

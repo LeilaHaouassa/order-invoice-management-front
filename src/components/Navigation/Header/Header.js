@@ -6,7 +6,7 @@ import Sidebar from "../Sidebar/Sidebar";
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    backgroundColor: "#FFEBCF",
+    backgroundColor: "#5BA0BF",
   },
 }));
 

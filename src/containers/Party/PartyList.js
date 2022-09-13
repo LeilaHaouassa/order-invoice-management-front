@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../store/actions/parties"
 
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -14,7 +16,7 @@ import * as VscIcons from "react-icons/vsc";
 import * as AiIcons from "react-icons/ai";
 
 import { Button } from "@material-ui/core";
-import DeleteSupplier from "./DeleteSupplier";
+import DeleteParty from "./DeleteParty";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,8 +50,8 @@ const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: "#B9BAC5",
     color: theme.palette.common.black,
-    bsupplier: 10,
-    bsupplierRadius: 3,
+    bparty: 10,
+    bpartyRadius: 3,
   },
   body: {
     fontSize: 14,
@@ -67,13 +69,17 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const SupplierList = (props) => {
+const PartyList = (props) => {
   const classes = useStyles();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [idOfClickedRow , setIdOfClickedRow] = useState('');
   const showDeleteModal = () => setDeleteModal(!deleteModal);
-
+  const parties = useSelector(state => state.partyReducer.parties);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actions.retrieveParties());
+  }, []);
   return (
     <React.Fragment>
       <div className={classes.distanceForTableBloc}>
@@ -82,15 +88,15 @@ const SupplierList = (props) => {
             Liste des Fournisseurs:
           </Typography>
         </div>
-        {console.log(props.suppliers)}
+        {console.log(props.partys)}
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow border={1}>
-                <StyledTableCell>Numéro</StyledTableCell>
+                <StyledTableCell>Id</StyledTableCell>
                 <StyledTableCell align="center">Nom</StyledTableCell>
                 <StyledTableCell align="center">Numéro Télèphone</StyledTableCell>
-                <StyledTableCell align="center">Address</StyledTableCell>
+                <StyledTableCell align="center">Ville</StyledTableCell>
                 {/* <StyledTableCell align="center">Détails</StyledTableCell> */}
                 <StyledTableCell align="center">
                   Modifier/Supprimer
@@ -98,32 +104,31 @@ const SupplierList = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.suppliers.map((supplier) => (
-                <StyledTableRow key={supplier.id}>
-                  <TableCell align="center">{supplier.id}</TableCell>
+              {console.log(parties)}
+              {parties &&
+               parties.map((party) => (
+                <StyledTableRow key={party.id}>
+                  <TableCell align="center">{party.id}</TableCell>
                   <TableCell component="th" scope="row" align="center">
-                    {supplier.name}
+                    {party.partyName.name.textContent}
                   </TableCell>
-                  <TableCell align="center">{supplier.phoneNumber}</TableCell>
-                  <TableCell align="center">{supplier.address}</TableCell>
-                  {/*In case there are more details to show about suppliers */}
-                  {/* <TableCell align="center">
-                    <VscIcons.VscOpenPreview ></VscIcons.VscOpenPreview>
-                  </TableCell> */}
+                  <TableCell align="center">{party.contact.telephone.textContent}</TableCell>
+                  <TableCell align="center">{party.postalAddress.cityName.textContent}</TableCell>
+                  
                   <TableCell align="center">
                     <AiIcons.AiOutlineEdit ></AiIcons.AiOutlineEdit>{" "}
                     /
                     <AiIcons.AiOutlineDelete
                       onClick={() => {
                         showDeleteModal();
-                        setIdOfClickedRow(supplier.id);
+                        // setIdOfClickedRow(party.id);
                       }}
                     ></AiIcons.AiOutlineDelete>
                     {deleteModal && (
-                      <DeleteSupplier
+                      <DeleteParty
                         showDeleteModal={showDeleteModal}
-                        supplierId={idOfClickedRow}
-                      ></DeleteSupplier>
+                        partyId={idOfClickedRow}
+                      ></DeleteParty>
                     )}
                   </TableCell>
                 </StyledTableRow>
@@ -148,17 +153,25 @@ const SupplierList = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    suppliers: state.supplierReducer.suppliers,
-  };
-};
+export default PartyList;
 
-// const mapDispatchToProps = (dispatch) => {
+// const mapStateToProps = (state) => {
 //   return {
-//     removesupplier: (id) =>
-//       dispatch({ type: actionTypes.supplier_DELETED, payload: { supplierId: id } }),
+//     parties: state..partys,
 //   };
 // };
 
-export default connect(mapStateToProps)(SupplierList);
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     removeparty: (id) =>
+//       dispatch({ type: actionTypes.party_DELETED, payload: { partyId: id } }),
+//   };
+// };
+
+// export default connect(mapStateToProps)(PartyList);
+
+
+{/*In case there are more details to show about partys */}
+                  {/* <TableCell align="center">
+                    <VscIcons.VscOpenPreview ></VscIcons.VscOpenPreview>
+                  </TableCell> */}

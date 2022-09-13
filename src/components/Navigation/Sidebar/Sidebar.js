@@ -13,6 +13,7 @@ function Sidebar() {
 
   const showSidebar = () => setSidebar(!sidebar);
 
+  //SIDEBAR WONT RETURN AFTER CLICKING OUTSIDE OF THE MENU
   return (
     <Aux>
       <IconContext.Provider value={{ color: "#ffff" }}>

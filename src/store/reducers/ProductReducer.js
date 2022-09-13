@@ -1,5 +1,5 @@
 import productData from "../../containers/Product/ProductData";
-import * as actionTypes from "../actions";
+import * as actionTypes from "../actions/types";
 
 const initialState = {
   products: productData,

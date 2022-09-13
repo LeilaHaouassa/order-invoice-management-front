@@ -1,7 +1,7 @@
 .modalBackground {
   width: 100vw;
   height: 100vh;
-  background-color: rgba(200, 200, 200, 0.25);
+  background-color: rgba(200, 200, 200, .25);
   position: fixed;
   display: flex;
   justify-content: center;
@@ -17,7 +17,7 @@
   width: 500px;
   height: 400px;
   border-radius: 12px;
-  background-color: white;
+  background-color: #FFA566;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: flex;
   flex-direction: column;
@@ -63,13 +63,13 @@
   height: 45px;
   margin: 10px;
   border: none;
-  background-color: cornflowerblue;
-  color: white;
+  background-color: #C5998C;
+  color: #4E4035;
   border-radius: 8px;
   font-size: 20px;
   cursor: pointer;
 }
 
 #cancelBtn {
-  background-color: crimson;
+  background-color: #C5998C;
 }

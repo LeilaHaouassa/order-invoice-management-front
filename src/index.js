@@ -4,32 +4,38 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import orderReducer from "./store/reducers/OrderReducer";
 import { Provider } from "react-redux";
 import productReducer from "./store/reducers/ProductReducer";
-import supplierReducer from "./store/reducers/SupplierReducer";
-import DateAdapter from '@mui/lab/AdapterDateFns';
-import frLocale from 'date-fns/locale/fr';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import partyReducer from "./store/reducers/PartyReducer";
+import { composeWithDevTools } from "redux-devtools-extension";
+import DateAdapter from "@mui/lab/AdapterDateFns";
+import frLocale from "date-fns/locale/fr";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import thunk from "redux-thunk";
 
+const middleware = [thunk];
 const rootReducer = combineReducers({
   orderReducer: orderReducer,
   productReducer: productReducer,
-  supplierReducer: supplierReducer,
+  partyReducer: partyReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
 
 ReactDOM.render(
   // <React.StrictMode>
-    <LocalizationProvider dateAdapter={DateAdapter} locale={frLocale}>
-      <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
-      </Provider>
-    </LocalizationProvider>,
+  // <LocalizationProvider dateAdapter={DateAdapter} locale={frLocale}>
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
+  //</LocalizationProvider>,
   // </React.StrictMode>,
   document.getElementById("root")
 );
