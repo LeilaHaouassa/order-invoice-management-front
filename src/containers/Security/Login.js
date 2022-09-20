@@ -20,7 +20,6 @@ const Login = (props) => {
     event.preventDefault();
 
     console.log(email, password);
-    //setPassword( bcrypt.hashSync(password, salt));
     nav("/auth/redirect");
   }
 

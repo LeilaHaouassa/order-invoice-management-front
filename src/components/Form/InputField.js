@@ -18,8 +18,9 @@ export default function InputField(props) {
 
   return (
     <TextField
-      variant="standard"
+      variant="outlined"
       fullWidth
+      color="primary"
       error={meta.touched && meta.error && true}
       helperText={_renderHelperText()}
       {...field}

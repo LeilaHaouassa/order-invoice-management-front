@@ -16,11 +16,7 @@ const SidebarMenu = ({ item , index , showSidebar }) => {
       : null;
   };
 
-  //For debugging purposes 
-  //DELETE LATER
-  useEffect(() => {
-    console.log('useEffect ran. dropdown is: ', dropdown);
-  }, [dropdown]);
+  
 
   return (
     <Aux>

@@ -12,13 +12,12 @@ import {
 import { Formik, Form } from "formik";
 import CustomerPartyForm from "./CustomerPartyForm";
 import PaymentForm from "./PaymentForm";
-import useStyles from "./Styles";
+import useStyles from "../../../components/Form/AddFormStyles";
 import SupplierPartyForm from "./SupplierPartyForm";
 import OrderFormModel from "./FormModel/OrderFormModel";
 import ValidationSchema from "./FormModel/ValidationSchema";
 import FormInitialValues from "./FormModel/FormInitialValues";
-import FormLayout from "./FormLayout/FormLayout";
-import { v4 as uuid } from 'uuid';
+import FormLayout from "../../../components/Form/FormLayout/FormLayout";
 import * as actionTypes from "../../../store/actions/types";
 import { connect } from "react-redux";
 
@@ -41,7 +40,7 @@ function _renderStepContent(step) {
 
 
 
-function Main() {
+function AddOrderMain() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const currentValidationSchema = ValidationSchema[activeStep];
@@ -141,4 +140,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null,mapDispatchToProps)(Main);
+export default connect(null,mapDispatchToProps)(AddOrderMain);

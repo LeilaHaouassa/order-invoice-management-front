@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import productReducer from "./store/reducers/ProductReducer";
 import partyReducer from "./store/reducers/PartyReducer";
 import { composeWithDevTools } from "redux-devtools-extension";
+import logger from 'redux-logger';
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import frLocale from "date-fns/locale/fr";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -22,9 +23,10 @@ const rootReducer = combineReducers({
   partyReducer: partyReducer,
 });
 
-const store = createStore(
+export const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(...middleware,logger)),
+  
 );
 
 ReactDOM.render(

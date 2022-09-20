@@ -1,11 +1,18 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { connect } from "react-redux";
-import * as actionTypes from "../../store/actions/types";
-
-
+import { useDispatch } from "react-redux";
+import * as actions from "../../store/actions/parties";
 
 function DeleteParty(props) {
+  const dispatch = useDispatch();
+  
+
+  const removeParty = (partyTechnicalId) => {
+    dispatch(actions.deleteParty(partyTechnicalId)).catch((e) => {
+      console.log(e);
+    });
+  };
+
   return ReactDom.createPortal(
     <div className="modalBackground">
       <div className="modalContainer">
@@ -17,12 +24,12 @@ function DeleteParty(props) {
           <h1>Attention</h1>
         </div>
         <div className="body">
-          <p>Êtes-vous sûr que vous voulez supprimer ce fournisseur?</p>
+          <p>Êtes-vous sûr que vous voulez supprimer cette entreprise?</p>
         </div>
         <div className="footer">
           <button
             onClick={() => {
-              props.removeSupplier(props.supplierId);
+              removeParty(props.partyTechnicalId);
               props.showDeleteModal();
             }}
           >
@@ -38,14 +45,4 @@ function DeleteParty(props) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    removesupplier: (id) =>
-      dispatch({
-        type: actionTypes.SUPPLIER_DELETED,
-        payload: { supplierId: id },
-      }),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(DeleteParty);
+export default DeleteParty;

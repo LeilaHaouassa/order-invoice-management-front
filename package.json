@@ -31,10 +31,12 @@
     "react-scripts": "^5.0.1",
     "react-spring": "^9.2.5",
     "redux": "^4.1.1",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.1",
     "uuidv4": "^6.2.13",
     "web-vitals": "^1.1.2",
-    "yup": "^0.32.9"
+    "yup": "^0.32.11",
+    "yup-phone": "^1.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
