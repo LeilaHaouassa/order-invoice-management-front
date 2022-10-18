@@ -21,26 +21,17 @@ export default function AddPartyMain() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    //When isMounted is true, the state is updated and function is returned
-    let isMounted = true;
 
     if (!isAddMode) {
       dispatch(reduxActions.getPartyById(technicalIdOfPartyToUpdate))
         .then((data) => {
-          if (isMounted) {
             setInitialParty(data);
-          }
         })
         .catch((err) => {
           setErrorMessage(err.message);
           console.log(err);
         });
     }
-    //Else if the action is unmounted before completion, then function
-    //is returned with isMounted as false.
-    //This ensures that when a new effect is to be executed,
-    //the previous effect will be first taken care of.
-    return () => (isMounted = false);
   }, []);
 
   function _sleep(ms) {

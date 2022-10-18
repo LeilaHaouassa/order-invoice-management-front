@@ -13,6 +13,18 @@ export const retrieveParties = () => async (dispatch) => {
   }
 };
 
+export const retrieveOtherParties = (partyId) => async (dispatch) => {
+  try {
+    const res = await PartyService.getAllOtherParties(partyId);
+    dispatch({
+      type: actionTypes.GET_OTHER_PARTIES,
+      payload: res.data,
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const deleteParty = (technicalId) => async (dispatch) => {
   try {
     await PartyService.removeParty(technicalId);
@@ -63,7 +75,7 @@ export const updateParty = (id, data) => async (dispatch) => {
 
     dispatch({
       type: actionTypes.PARTY_UPDATED,
-      payload: data,
+      payload: res.data, //used to be data check if it works properly
     });
 
   } catch (err) {

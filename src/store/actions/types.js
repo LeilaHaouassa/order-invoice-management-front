@@ -1,13 +1,18 @@
 export const REFRESH_TOKEN = "REFRESH_TOKEN";
 
-export const ORDER_DELETED ='ORDER_DELETED';
-export const ORDER_ADDED = 'ORDER_ADDED'; 
+export const ORDER_SENT = 'ORDER_SENT';
+export const ORDER_CHANGED = 'ORDER_CHANGED';
+export const ORDER_CANCELLED = 'ORDER_CANCELLED';
+export const ORDER_ACCEPTED = 'ORDER_ACCEPTED' ;
+export const GET_SENT_ORDERS = 'GET_SENT_ORDERS';
 
 
+export const GET_PRODUCTS = "GET_PRODUCTS"; 
 export const PRODUCT_DELETED = 'PRODUCT_DELETED';
 export const PRODUCT_ADDED = 'PRODUCT_ADDED';
 
-export const GET_PARTIES = 'GET_PARTIES';     
+export const GET_PARTIES = 'GET_PARTIES';   
+export const GET_OTHER_PARTIES = 'GET_OTHER_PARTIES';  
 export const PARTY_DELETED= 'PARTY_DELETED';
 export const PARTY_ADDED = 'PARTY_ADDED';
 export const PARTY_UPDATED = 'PARTY_UPDATED'; 

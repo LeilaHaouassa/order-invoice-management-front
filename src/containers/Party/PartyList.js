@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../../store/actions/parties";
+import * as actions from "../../store/actions/parties";
 
-import { useStyles, StyledTableCell, StyledTableRow } from "./Styles";
+import { useStyles, StyledTableCell, StyledTableRow } from "../../components/List/Styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -16,7 +16,7 @@ import * as VscIcons from "react-icons/vsc";
 import * as AiIcons from "react-icons/ai";
 
 import { Button } from "@material-ui/core";
-import DeleteParty from "../DeleteParty";
+import DeleteParty from "./DeleteParty";
 import { Link } from "react-router-dom";
 
 const PartyList = (props) => {

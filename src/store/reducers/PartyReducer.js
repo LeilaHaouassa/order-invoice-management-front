@@ -2,6 +2,7 @@ import * as actionTypes from "../actions/types";
 
 const initialState = {
   parties: [],
+  partiesRef:[]
 };
 
 const PartyReducer = (state = initialState, action) => {
@@ -12,6 +13,11 @@ const PartyReducer = (state = initialState, action) => {
         ...state,
         parties: action.payload,
       };
+    case actionTypes.GET_OTHER_PARTIES:
+      return{
+        ...state,
+        partiesRef: action.payload,
+      } 
     case actionTypes.PARTY_DELETED:
       return {
         ...state,
@@ -19,7 +25,6 @@ const PartyReducer = (state = initialState, action) => {
           ({ technicalId }) => technicalId !== action.payload.technicalId
         ),
       };
-      return ;
     case actionTypes.PARTY_ADDED:
       tempParties = [...state.parties, action.payload];
       return {

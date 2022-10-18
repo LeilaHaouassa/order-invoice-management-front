@@ -5,7 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import orderReducer from "./store/reducers/OrderReducer";
 import { Provider } from "react-redux";
 import productReducer from "./store/reducers/ProductReducer";
 import partyReducer from "./store/reducers/PartyReducer";
@@ -15,10 +14,11 @@ import DateAdapter from "@mui/lab/AdapterDateFns";
 import frLocale from "date-fns/locale/fr";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import thunk from "redux-thunk";
+import orderCustomerReducer from "./store/reducers/OrderCustomerReducer";
 
 const middleware = [thunk];
 const rootReducer = combineReducers({
-  orderReducer: orderReducer,
+  orderCustomerReducer: orderCustomerReducer,
   productReducer: productReducer,
   partyReducer: partyReducer,
 });
