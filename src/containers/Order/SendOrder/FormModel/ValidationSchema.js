@@ -7,12 +7,11 @@ const validationSchema = Yup.object().shape({
     ),
   }),
   sellerSupplierParty: Yup.object().shape({
-    party: Yup.object().defined("valeur non défini n'est pas accepté"),
+    party: Yup.object().required("Sélectionnez un fournisseur"),
   }),
   orderLine: Yup.array().of(
     Yup.object().shape({
       lineItem: Yup.object()
-        //.required()
         .shape({
           id: Yup.object().shape({
             identifierContent: Yup.string().required(
@@ -29,13 +28,7 @@ const validationSchema = Yup.object().shape({
               amountContent: Yup.number(),
             }),
           }),
-          item: Yup.object().shape({
-            name: Yup.object().shape({
-              textContent: Yup.string()
-                .defined("valeur non défini n'est pas accepté")
-                .required("Sélectionnez un produit"),
-            }),
-          }),
+          item: Yup.object().required("Sélectionnez un produit ou service"),
         }),
     })
   ),

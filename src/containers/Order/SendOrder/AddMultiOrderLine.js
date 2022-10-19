@@ -22,61 +22,61 @@ function AddMultiOrderLine(props) {
     event.preventDefault();
   };
 
-  // const ShowExtraOrderLineField = () => {
-  //   return numberOfOrderLines.map((index) => {
-  //     return (
-  //       <Aux key={index}>
-  //         <Grid item xs={12} sm={6}>
-  //           <Field
-  //             component={TextField}
-  //             name={`orderLine[${index}].lineItem.id.identifierContent`}
-  //             label="Identifiant du produit"
-  //             type="text"
-  //             margin="normal"
-  //           />
-  //         </Grid>
-  //         <Grid item xs={12} sm={6}>
-  //           <Field
-  //             component={TextField}
-  //             name={`orderLine[${index}].lineItem.quantity.quantityContent`}
-  //             label="Quantité du produit"
-  //             type="number"
-  //             margin="normal"
-  //             defaultValue={1}
-  //           />
-  //         </Grid>
-  //         <Grid item xs={12} sm={6}>
-  //           <Field
-  //             component={TextField}
-  //             name={`orderLine[${index}].lineItem.price.priceAmount.amountContent`}
-  //             label="prix du produit"
-  //             margin="normal"
-  //             type="number"
-  //             defaultValue={0}
-  //           />
-  //         </Grid>
-  //         <Grid item xs={12} sm={6}>
-  //           <Field
-  //             component={TextField}
-  //             name={`orderLine[${index}].lineItem.item`}
-  //             label="Produit ou Service"
-  //             select
-  //             margin="normal"
-  //             fullWidth
-  //           >
-  //             {/* <MenuItem disabled selected value=""> Choisissez un produit ou service</MenuItem> */}
-  //             {props.products &&
-  //               props.products.map((product) => (
-  //                 <MenuItem key={product.technicalId} value={product}>
-  //                   {product?.name?.textContent}
-  //                 </MenuItem>
-  //               ))}
-  //           </Field>
-  //         </Grid>
-  //       </Aux>
-  //     );
-  //   });
-  // };
+  const ShowExtraOrderLineField = () => {
+    return numberOfOrderLines.map((index) => {
+      return (
+        <Aux key={index}>
+          <Grid item xs={12} sm={6}>
+            <Field
+              component={TextField}
+              name={`orderLine[${index}].lineItem.id.identifierContent`}
+              label="Identifiant du produit"
+              type="text"
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Field
+              component={TextField}
+              name={`orderLine[${index}].lineItem.quantity.quantityContent`}
+              label="Quantité du produit"
+              type="number"
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Field
+              component={TextField}
+              name={`orderLine[${index}].lineItem.price.priceAmount.amountContent`}
+              label="prix du produit"
+              margin="normal"
+              type="number"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <MenuItem disabled selected value=""></MenuItem>
+            {props.products && props.products.length > 0 && (
+              <Field
+                component={TextField}
+                name={`orderLine[${index}].lineItem.item`}
+                label="Produit ou Service"
+                select
+                margin="normal"
+                fullWidth
+              >
+                {props.products.map((product,productIndex) => (
+                  <MenuItem key={product.technicalId} value={props.products[productIndex]}>
+                    {product?.name?.textContent}
+                  </MenuItem>
+                ))}
+              </Field>
+            )}
+          </Grid>
+        </Aux>
+      );
+    });
+  };
+
   return (
     <>
       <Grid item xs={12} sm={6}>
@@ -107,7 +107,7 @@ function AddMultiOrderLine(props) {
         />
       </Grid>
       <Grid item xs={12} sm={6}>
-        {props.products.length > 0 && (
+        {props.products && props.products.length > 0 && (
           <Field
             component={TextField}
             name={`orderLine[0].lineItem.item`}
@@ -116,13 +116,14 @@ function AddMultiOrderLine(props) {
             margin="normal"
             fullWidth
           >
-            {props.products.map((product,index) => (
+            <MenuItem selected disabled value=""></MenuItem>
+            {props.products.map((product, index) => (
               <MenuItem key={product.technicalId} value={props.products[index]}>
-                <>{product?.technicalId}</>
+                {`${product?.name?.textContent}`}
               </MenuItem>
             ))}
           </Field>
-        )}  
+        )}
       </Grid>
       {/* {ShowExtraOrderLineField()} */}
       <Grid item xs={12} container justifyContent="center">

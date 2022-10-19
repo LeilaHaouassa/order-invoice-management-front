@@ -37,7 +37,6 @@ export default function SendOrderForm(props) {
           {props.parties && (
             <Field
               component={TextField}
-              //type="text"
               name="sellerSupplierParty.party"
               label="Fournisseur"
               select
