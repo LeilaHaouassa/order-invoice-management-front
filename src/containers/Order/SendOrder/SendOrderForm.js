@@ -1,46 +1,42 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-
+import Alert from "@mui/material/Alert";
 import { Field } from "formik";
 import MenuItem from "@mui/material/MenuItem";
 
 import { TextField } from "formik-mui";
-import AddMultiOrderLine from "./AddMultiOrderLine";
 
 export default function SendOrderForm(props) {
-  const handleChange = (event) => {
-    //setSelectedParty(event.target.value);
-    //console.log(selectedParty);
-    console.log(event.target.value);
-  };
- 
-  
-
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
+      <Grid item container spacing={3}>
         <Grid item xs={12}>
           <Typography component="h5" variant="h5" align="center" gutterBottom>
             Création du Bon de Commande
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={8}>
+        {props.errorMessage && (
+          <Grid item xs={12}>
+            <Alert severity="error">{props.errorMessage}</Alert>
+          </Grid>
+        )}
+        <Grid item xs={12} sm={6}>
           <Field
             component={TextField}
             name="id.identifierContent"
             label="Identifiant du bon de commande"
             type="text"
+            fullWidth
           />
         </Grid>
-        <Grid item xs={8}>
-          {props.parties && (
+        <Grid item xs={12} sm={6}>
+          {props.parties && props.parties.length > 0 && (
             <Field
               component={TextField}
               name="sellerSupplierParty.party"
               label="Fournisseur"
               select
-              margin="normal"
               fullWidth
             >
               <MenuItem selected disabled value=""></MenuItem>
@@ -52,10 +48,6 @@ export default function SendOrderForm(props) {
             </Field>
           )}
         </Grid>
-
-        <AddMultiOrderLine products={props.products} />
-
-        {/* {renderMultiline()} */}
       </Grid>
     </React.Fragment>
   );

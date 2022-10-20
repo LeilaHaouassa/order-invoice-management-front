@@ -1,135 +1,145 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
-import { Field } from "formik";
+import { Field, FieldArray } from "formik";
 import MenuItem from "@mui/material/MenuItem";
 import { TextField } from "formik-mui";
+
 import Button from "@mui/material/Button";
 import Aux from "../../../components/hoc/Aux";
+import Typography from "@mui/material/Typography";
 
 function AddMultiOrderLine(props) {
-  console.log(props);
-  const [numberOfOrderLines, setNumberOfOrderLines] = useState([]);
-  const addOrderLine = () => {
-    const newNumberOfOrderLines = [...numberOfOrderLines];
-    const size = newNumberOfOrderLines.length + 1;
-    newNumberOfOrderLines.push(size);
-    setNumberOfOrderLines(newNumberOfOrderLines);
-    console.log(numberOfOrderLines);
-  };
 
-  const addOrderLineField = (event) => {
-    addOrderLine();
+
+  const addOrderLineField = (event, values, setValues) => {
+    const orderLine = [...values.orderLine];
+    orderLine.push({
+      lineItem: {
+        id: {
+          identifierContent: "",
+        },
+        quantity: {
+          quantityContent: 1,
+        },
+        price: {
+          priceAmount: {
+            amountContent: 0,
+          },
+        },
+        item: "",
+      },
+    });
+
+    setValues({ ...values, orderLine });
     event.preventDefault();
   };
 
-  const ShowExtraOrderLineField = () => {
-    return numberOfOrderLines.map((index) => {
-      return (
-        <Aux key={index}>
-          <Grid item xs={12} sm={6}>
-            <Field
-              component={TextField}
-              name={`orderLine[${index}].lineItem.id.identifierContent`}
-              label="Identifiant du produit"
-              type="text"
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Field
-              component={TextField}
-              name={`orderLine[${index}].lineItem.quantity.quantityContent`}
-              label="Quantité du produit"
-              type="number"
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Field
-              component={TextField}
-              name={`orderLine[${index}].lineItem.price.priceAmount.amountContent`}
-              label="prix du produit"
-              margin="normal"
-              type="number"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <MenuItem disabled selected value=""></MenuItem>
-            {props.products && props.products.length > 0 && (
-              <Field
-                component={TextField}
-                name={`orderLine[${index}].lineItem.item`}
-                label="Produit ou Service"
-                select
-                margin="normal"
-                fullWidth
-              >
-                {props.products.map((product,productIndex) => (
-                  <MenuItem key={product.technicalId} value={props.products[productIndex]}>
-                    {product?.name?.textContent}
-                  </MenuItem>
-                ))}
-              </Field>
-            )}
-          </Grid>
-        </Aux>
-      );
+  const calculateAnticipatedTotal = (values,setAnticipatedTotalVar) => {
+    let total = 0;
+    values.orderLine.forEach((orderLine) => {
+      total +=
+        orderLine.lineItem.price.priceAmount.amountContent *
+        orderLine.lineItem.quantity.quantityContent;
     });
+    setAnticipatedTotalVar(total);
   };
 
   return (
     <>
-      <Grid item xs={12} sm={6}>
-        <Field
-          component={TextField}
-          name={`orderLine[0].lineItem.id.identifierContent`}
-          label="Identifiant du produit"
-          type="text"
-          margin="normal"
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Field
-          component={TextField}
-          name={`orderLine[0].lineItem.quantity.quantityContent`}
-          label="Quantité du produit"
-          type="number"
-          margin="normal"
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Field
-          component={TextField}
-          name={`orderLine[0].lineItem.price.priceAmount.amountContent`}
-          label="prix du produit"
-          margin="normal"
-          type="number"
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        {props.products && props.products.length > 0 && (
-          <Field
-            component={TextField}
-            name={`orderLine[0].lineItem.item`}
-            label="Produit ou Service"
-            select
-            margin="normal"
-            fullWidth
-          >
-            <MenuItem selected disabled value=""></MenuItem>
-            {props.products.map((product, index) => (
-              <MenuItem key={product.technicalId} value={props.products[index]}>
-                {`${product?.name?.textContent}`}
-              </MenuItem>
-            ))}
-          </Field>
-        )}
-      </Grid>
-      {/* {ShowExtraOrderLineField()} */}
+      <FieldArray name="orderLine">
+        <Grid item xs={12} container>
+          {props.values.orderLine &&
+            props.values.orderLine.length > 0 &&
+            props.values.orderLine.map((orderLine, index) => {
+              return (
+                <Aux key={index}>
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      gutterBottom
+                      marginTop={2}
+                    >
+                      Ligne de commande numéro {index + 1}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name={`orderLine[${index}].lineItem.id.identifierContent`}
+                      label="Identifiant du ligne de commande"
+                      type="text"
+                      margin="normal"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name={`orderLine[${index}].lineItem.quantity.quantityContent`}
+                      label="Quantité du produit"
+                      type="number"
+                      margin="normal"
+                      onBlur={(e) => {
+                        calculateAnticipatedTotal(props.values,props.setAnticipatedTotalVar);
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={TextField}
+                      name={`orderLine[${index}].lineItem.price.priceAmount.amountContent`}
+                      label="prix du produit"
+                      margin="normal"
+                      type="number"
+                      onBlur={(e) => {
+                        calculateAnticipatedTotal(props.values,props.setAnticipatedTotalVar);
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    {props.products && props.products.length > 0 && (
+                      <Field
+                        component={TextField}
+                        name={`orderLine[${index}].lineItem.item`}
+                        label="Produit ou Service"
+                        select
+                        margin="normal"
+                        fullWidth
+                      >
+                        <MenuItem selected disabled value=""></MenuItem>
+                        {props.products.map((product, productIndex) => (
+                          <MenuItem
+                            key={product.technicalId}
+                            value={props.products[productIndex]}
+                          >
+                            {`${product?.name?.textContent}`}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    )}
+                  </Grid>
+                </Aux>
+              );
+            })}
+        </Grid>
+      </FieldArray>
+
       <Grid item xs={12} container justifyContent="center">
-        <Button variant="outlined" color="primary" onClick={addOrderLineField}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={(e) => addOrderLineField(e, props.values, props.setValues)}
+        >
           Ajouter un autre ligne de commande
         </Button>
+      </Grid>
+
+      <Grid item xs={12} container justifyContent="flex-start">
+        <Grid item xs={12}>
+          <Typography variant="h5" align="center" gutterBottom marginTop={2}>
+            Montant Total {props.anticipatedTotalVar} DNT
+          </Typography>
+        </Grid>
       </Grid>
     </>
   );

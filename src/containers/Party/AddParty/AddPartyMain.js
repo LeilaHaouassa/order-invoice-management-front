@@ -34,12 +34,8 @@ export default function AddPartyMain() {
     }
   }, []);
 
-  function _sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   async function _submitForm(values, actions) {
-    await _sleep(1000);
     if (isAddMode) {
       addParty(values, actions);
     } else {

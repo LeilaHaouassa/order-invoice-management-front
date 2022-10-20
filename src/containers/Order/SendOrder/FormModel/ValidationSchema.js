@@ -32,5 +32,10 @@ const validationSchema = Yup.object().shape({
         }),
     })
   ),
+  anticipatedMonetaryTotal:Yup.object().shape({
+    payableAmount:Yup.object().shape({
+      amountContent: Yup.number(),
+    })
+  }),
 });
 export default validationSchema;

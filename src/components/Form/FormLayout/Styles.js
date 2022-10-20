@@ -3,14 +3,19 @@ import {
     responsiveFontSizes,
     makeStyles
   } from '@material-ui/core/styles';
-  import { cyan } from '@material-ui/core/colors';
+
   
   let theme = createTheme({
     palette: {
       type: 'light',
-    //   primary: cyan,
-    //   secondary: cyan
-    }
+    },
+    typography: {
+      allVariants: {
+        fontFamily: 'Montserrat',
+        textTransform: 'none',
+        fontSize: 16,
+      },
+    },
   });
   
   theme = responsiveFontSizes(theme);

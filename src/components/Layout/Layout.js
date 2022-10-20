@@ -30,7 +30,7 @@ const Layout = (props) => {
               <Route path="parties" element={<PartyList/>} />
               <Route path="parties/add" element={<AddPartyMain />}/>
               <Route path="parties/edit/:technicalIdOfPartyToUpdate" element={<AddPartyMain/>}/>
-              <Route path="parties/:partyId/customer-side/orders/sent" element={<SentOrderList/>} />
+              <Route path="parties/:partyId/customer-side/orders" element={<SentOrderList/>} />
               <Route path="parties/:partyId/customer-side/orders/send" element={<SendOrderMain/>} />
             </Routes>
           </Col>

@@ -12,6 +12,12 @@ const OrderCustomerReducer = (state = initialState, action) => {
         ...state,
         orders: action.payload,
       };
+    case actionTypes.ORDER_SENT:
+      tempOrders =[...state.orders,action.payload];
+      return {
+        ...state,
+        orders: tempOrders,
+      };
   }
   return state;
 };

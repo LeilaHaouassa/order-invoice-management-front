@@ -46,11 +46,9 @@ export default {
       }
     }
   ],
-  // //To be calculated not inserted
-  // anticipatedMonetaryTotal: {
-  //   payableAmount: {
-  //     amountContent: 0,
-  //   },
-  // },
-  // historyStack: [],
+  anticipatedMonetaryTotal: {
+    payableAmount: {
+      amountContent: 0,
+    },
+  },
 };
