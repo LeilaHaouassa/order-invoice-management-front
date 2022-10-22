@@ -33,3 +33,25 @@ export const placeOrder = (partyId, data) => async (dispatch) => {
     }
   }
 };
+
+
+export const cancelOrder = (partyId, data) => async (dispatch) => {
+  try {
+    const res = await OrderCustomerService.cancelOrder(partyId,data);
+    dispatch({
+      type: actionTypes.ORDER_CANCELLED,
+      payload: res.data,
+    });
+  } catch (error) {
+    if (error.response) {
+      // client received an error response (5xx, 4xx)
+      throw error.response.data;
+    } else if (error.request) {
+      // client never received a response, or request never left
+      console.log(error);
+    } else {
+      // anything else
+      console.log(error);
+    }
+  }
+};

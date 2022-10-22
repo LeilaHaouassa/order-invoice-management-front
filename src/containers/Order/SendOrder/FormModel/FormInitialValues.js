@@ -1,30 +1,8 @@
 export default {
-  // technicalId: "",
   id: {
     identifierContent: "",
   },
-  // issueDate: {
-  //   dateContent: ""
-  // },
-  // issueTime: {
-  //   timeContent: ""
-  // },
-  // status: "",
-  // buyerCustomerParty: {
-  //   party: {
-  //     technicalId: "",
-  //     partyIdentification: {
-  //       id: {
-  //         identifierContent: ""
-  //       }
-  //     },
-  //     partyName: {
-  //       name: {
-  //         textContent: ""
-  //       }
-  //     }
-  //   }
-  // },
+  
   sellerSupplierParty: {
     party: "",
   },

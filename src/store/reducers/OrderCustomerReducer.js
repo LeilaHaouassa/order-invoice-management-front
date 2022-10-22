@@ -18,6 +18,13 @@ const OrderCustomerReducer = (state = initialState, action) => {
         ...state,
         orders: tempOrders,
       };
+    case actionTypes.ORDER_CANCELLED:
+      tempOrders =[...state.orders,...action.payload];
+      return {
+        ...state,
+        orders: tempOrders,
+      };
+    
   }
   return state;
 };

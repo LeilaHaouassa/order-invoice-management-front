@@ -7,6 +7,7 @@ import PartyList from "../../containers/Party/PartyList";
 import AddPartyMain from "../../containers/Party/AddParty/AddPartyMain";
 import SentOrderList from "../../containers/Order/SentOrderList";
 import SendOrderMain from "../../containers/Order/SendOrder/SendOrderMain";
+import CancelOrderMain from "../../containers/Order/CancelOrder/CancelOrderMain"
 
 
 
@@ -24,14 +25,12 @@ const Layout = (props) => {
         <Row>
           <Col>
             <Routes>
-              {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
-              {/* <Route path="/customerSide/orders/add" element={<AddOrderMain/>} /> */}
-              {/* <Route path="/produits" element={<ProductList/>} /> */}
               <Route path="parties" element={<PartyList/>} />
               <Route path="parties/add" element={<AddPartyMain />}/>
               <Route path="parties/edit/:technicalIdOfPartyToUpdate" element={<AddPartyMain/>}/>
               <Route path="parties/:partyId/customer-side/orders" element={<SentOrderList/>} />
               <Route path="parties/:partyId/customer-side/orders/send" element={<SendOrderMain/>} />
+              <Route path="parties/:partyId/customer-side/orders/:orderId/cancel" element={<CancelOrderMain/>} />
             </Routes>
           </Col>
         </Row>

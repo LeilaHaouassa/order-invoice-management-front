@@ -4,39 +4,33 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import useStyles from "../../../components/Form/AddFormStyles";
 import * as partyActions from "../../../store/actions/parties";
-import * as productActions from "../../../store/actions/products";
 import * as orderActions from "../../../store/actions/orders";
 import ValidationSchema from "./FormModel/ValidationSchema";
 import FormInitialValues from "./FormModel/FormInitialValues";
 import FormLayout from "../../../components/Form/FormLayout/FormLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import SendOrderForm from "./SendOrderForm";
-import AddMultiOrderLine from "./AddMultiOrderLine";
+import CancelOrderForm from "./CancelOrderForm";
 
-function SendOrderMain() {
+function CancelOrderMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const parties = useSelector((state) => state.partyReducer.partiesRef);
-  const products = useSelector((state) => state.productReducer.products);
-  let { partyId } = useParams();
+  let { orderId, partyId } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
-  const [anticipatedTotalVar, setAnticipatedTotalVar] = useState(0);
   const nav = useNavigate();
 
   useEffect(() => {
     dispatch(partyActions.retrieveOtherParties(partyId));
-    dispatch(productActions.retrieveProducts());
   }, []);
 
   async function _submitForm(values, actions) {
-    values.anticipatedMonetaryTotal.payableAmount.amountContent =
-      anticipatedTotalVar;
-    placeOrder(values, actions);
+    values.orderReference[0].technicalId = orderId;
+    CancelOrder(values, actions);
   }
 
-  async function placeOrder(values, actions) {
-    dispatch(orderActions.placeOrder(partyId, values))
+  async function CancelOrder(values, actions) {
+    dispatch(orderActions.cancelOrder(partyId, values))
       .then(() => {
         actions.setSubmitting(true);
         nav(`/app/parties/${partyId}/customer-side/orders`);
@@ -56,17 +50,12 @@ function SendOrderMain() {
           validationSchema={ValidationSchema}
           onSubmit={_submitForm}
         >
-          {({ values, setValues }) => (
+
             <Form>
               <Grid container spacing={3}>
-                <SendOrderForm parties={parties} errorMessage={errorMessage} />
-
-                <AddMultiOrderLine
-                  products={products}
-                  values={values}
-                  setValues={setValues}
-                  anticipatedTotalVar={anticipatedTotalVar}
-                  setAnticipatedTotalVar={setAnticipatedTotalVar}
+                <CancelOrderForm
+                  parties={parties}
+                  errorMessage={errorMessage}
                 />
 
                 <Grid item xs={12} container justifyContent="flex-end">
@@ -95,11 +84,11 @@ function SendOrderMain() {
                 </Grid>
               </Grid>
             </Form>
-          )}
+
         </Formik>
       </React.Fragment>
     </FormLayout>
   );
 }
 
-export default SendOrderMain;
+export default CancelOrderMain;
