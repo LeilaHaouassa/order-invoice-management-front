@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
           quantity: Yup.object().shape({
             quantityContent: Yup.number()
               .min(1)
-              .required("Identifiant du produit est obligatoire"),
+              .required("Quantité est obligatoire"),
           }),
           price: Yup.object().shape({
             priceAmount: Yup.object().shape({

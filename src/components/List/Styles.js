@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme) => ({
   export const StyledTableRow = withStyles((theme) => ({
     root: {
       "&:nth-of-type(odd)": {
-        backgroundColor: "#9CC5EB",
+        backgroundColor: "#9cc5eb54",
       },
       "&:nth-of-type(even)": {
         backgroundColor: "White",

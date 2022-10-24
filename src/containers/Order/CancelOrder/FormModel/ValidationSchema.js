@@ -11,11 +11,6 @@ const validationSchema = Yup.object().shape({
         textContent: Yup.string().required("Raison d'annulation est obligatoire")
     })
   ),
-  orderReference: Yup.array().of(
-    Yup.object().shape({
-      technicalId: Yup.string() ,
-    })
-  ),
  
 });
 export default validationSchema;

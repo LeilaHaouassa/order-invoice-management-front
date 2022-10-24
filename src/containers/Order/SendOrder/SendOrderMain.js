@@ -12,7 +12,7 @@ import FormLayout from "../../../components/Form/FormLayout/FormLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SendOrderForm from "./SendOrderForm";
-import AddMultiOrderLine from "./AddMultiOrderLine";
+import AddMultiOrderLine from "../AddMultiOrderLine";
 
 function SendOrderMain() {
   const classes = useStyles();

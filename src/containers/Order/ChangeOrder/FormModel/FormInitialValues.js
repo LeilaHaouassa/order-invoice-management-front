@@ -1,45 +1,35 @@
-export default{
-    anticipatedMonetaryTotal: {
-      payableAmount: {
-        amountContent: 0
-      }
+export default {
+  anticipatedMonetaryTotal: {
+    payableAmount: {
+      amountContent: 0,
     },
-    id: {
-      identifierContent: ""
-    },
-    orderLine: [
-      {
-        lineItem: {
-          id: {
-            identifierContent: ""
+  },
+  id: {
+    identifierContent: "",
+  },
+  orderLine: [
+    {
+      lineItem: {
+        id: {
+          identifierContent: "",
+        },
+        item: "",
+        price: {
+          priceAmount: {
+            amountContent: 0,
           },
-          item: "",
-          price: {
-            priceAmount: {
-              amountContent: 0
-            }
-          },
-          quantity: {
-            quantityContent: 0
-          }
-        }
-      }
-    ],
-    orderReference: {
-      id: {
-        identifierContent: ""
+        },
+        quantity: {
+          quantityContent: 1,
+        },
       },
-      issueDate: {
-        dateContent: ""
-      },
-      issueTime: {
-        timeContent: ""
-      },
-      technicalId: ""
     },
-    
-    sequenceNumberID: {
-      identifierContent: ""
-    },
-    
-  };
+  ],
+  orderReference: {
+    technicalId: "",
+  },
+
+  sequenceNumberID: {
+    identifierContent: "",
+  },
+};

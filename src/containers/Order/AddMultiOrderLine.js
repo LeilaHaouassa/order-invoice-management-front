@@ -3,9 +3,8 @@ import Grid from "@mui/material/Grid";
 import { Field, FieldArray } from "formik";
 import MenuItem from "@mui/material/MenuItem";
 import { TextField } from "formik-mui";
-
 import Button from "@mui/material/Button";
-import Aux from "../../../components/hoc/Aux";
+import Aux from "../../components/hoc/Aux";
 import Typography from "@mui/material/Typography";
 
 function AddMultiOrderLine(props) {
@@ -137,7 +136,7 @@ function AddMultiOrderLine(props) {
       <Grid item xs={12} container justifyContent="flex-start">
         <Grid item xs={12}>
           <Typography variant="h5" align="center" gutterBottom marginTop={2}>
-            Montant Total {props.anticipatedTotalVar} DNT
+            Montant Total {props.anticipatedTotalVar} TND
           </Typography>
         </Grid>
       </Grid>

@@ -12,11 +12,16 @@ const cancelOrder = (partyId, data) => {
     return http.post(`parties/${partyId}/customer-service/orders/cancel`,data);
 }
 
+const changeOrder = (partyId , data) => {
+    return http.post(`parties/${partyId}/customer-service/orders/change`,data);
+}
+
 
 const OrderCustomerService= {
     getSentOrders,
     placeOrder,
     cancelOrder,
+    changeOrder,
 };
 
 export default OrderCustomerService;

@@ -18,87 +18,79 @@ import Button from "@mui/material/Button";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/orders";
-import getOrderStatus from "./getOrderStatus";
+import getActionType from "./getActionType";
 
-const SentOrderList = () => {
+const OrderHistoryListForCustomer = () => {
   const classes = useStyles();
+  const history = useSelector((state) => state.orderCustomerReducer.history);
   const orders = useSelector((state) => state.orderCustomerReducer.orders);
   const dispatch = useDispatch();
-  let { partyId } = useParams();
+  let { partyId, orderId } = useParams();
 
   useEffect(() => {
-    dispatch(actions.retrieveSentOrders(partyId));
-  }, [partyId]);
+    dispatch(actions.getOrderById(orderId));
+    dispatch(actions.getOrderHistory(orderId));
+    
+  }, []);
 
   return (
     <React.Fragment>
       <div className={classes.distanceForTableBloc}>
         <div className={classes.distanceForTitle}>
           <Typography component="h2" variant="h6" gutterBottom>
-            Liste des Bons de Commande Envoyés:
+            Historique de cette commande:
           </Typography>
         </div>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow border={1}>
-                <StyledTableCell align="center">Id</StyledTableCell>
-                <StyledTableCell align="center">Fournisseur</StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
+                <StyledTableCell align="center">ID</StyledTableCell>
                 <StyledTableCell align="center">Date</StyledTableCell>
-                <StyledTableCell align="center">Statut</StyledTableCell>
-                {/* <StyledTableCell align="center">Montant</StyledTableCell> */}
+                <StyledTableCell align="center">Temps</StyledTableCell>
                 <StyledTableCell align="center">Détails</StyledTableCell>
-                <StyledTableCell align="center">Modifier</StyledTableCell>
-                <StyledTableCell align="center">Annuler</StyledTableCell>
-                <StyledTableCell align="center">Historique</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {orders &&
+                orders.length > 0 &&
                 orders.map((order) => (
                   <StyledTableRow key={order.technicalId}>
                     <TableCell align="center">
-                      {order.id.identifierContent}
+                      {getActionType(order?.actionType)}
                     </TableCell>
                     <TableCell align="center">
-                      {
-                        order.sellerSupplierParty.party.partyName.name
-                          .textContent
-                      }
+                      {order?.id?.identifierContent}
                     </TableCell>
                     <TableCell component="th" scope="row" align="center">
-                      {order.issueDate.dateContent}
+                      {order?.issueDate?.dateContent}
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="center">
+                      {order?.issueTime?.timeContent}
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="center">
+                      Détails
+                    </TableCell>
+                  </StyledTableRow>
+                ))}
+              {history &&
+                history.length > 0 &&
+                history.map((element) => (
+                  <StyledTableRow key={element.technicalId}>
+                    <TableCell align="center">
+                      {getActionType(element?.actionType)}
                     </TableCell>
                     <TableCell align="center">
-                      {getOrderStatus(order.status)}
-                    </TableCell>
-                    {/* <TableCell align="center">{order.total}</TableCell> */}
-                    <TableCell align="center">
-                      {" "}
-                      voir plus
-                      {/* <VscIcons.VscOpenPreview color="disabled"></VscIcons.VscOpenPreview> */}
+                      {element?.id?.identifierContent}
                     </TableCell>
                     <TableCell align="center">
-                      <Link
-                        to={`/app/parties/${partyId}/customer-side/orders/${order.technicalId}/change`}
-                      >
-                        Modifier
-                      </Link>
+                      {element?.issueDate?.dateContent}
                     </TableCell>
                     <TableCell align="center">
-                      <Link
-                        to={`/app/parties/${partyId}/customer-side/orders/${order.technicalId}/cancel`}
-                      >
-                        Annuler
-                      </Link>
+                      {element?.issueTime?.timeContent}
                     </TableCell>
-                    <TableCell align="center">
-                      <Link
-                        to={`/app/parties/${partyId}/customer-side/orders/${order.technicalId}/history`}
-                      >
-                        Historique
-                      </Link>
-                    </TableCell>
+                    <TableCell align="center">Détails</TableCell>
                   </StyledTableRow>
                 ))}
             </TableBody>
@@ -106,13 +98,13 @@ const SentOrderList = () => {
         </TableContainer>
 
         <div className={classes.distanceForAddButton}>
-          <Link to={`/app/parties/${partyId}/customer-side/orders/send`}>
+          <Link to={`/app/parties/${partyId}/customer-side/orders`}>
             <Button
               variant="contained"
               size="large"
               className={classes.containedButton}
             >
-              Envoyer un bon de commande
+              Retourner
             </Button>
           </Link>
         </div>
@@ -121,4 +113,4 @@ const SentOrderList = () => {
   );
 };
 
-export default SentOrderList;
+export default OrderHistoryListForCustomer;
