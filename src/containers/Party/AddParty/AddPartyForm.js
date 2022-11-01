@@ -9,7 +9,7 @@ export default function AddPartyForm(props) {
     <React.Fragment>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Typography component="h5" variant="h5" align="center" gutterBottom>
+          <Typography component="h6" variant="h4" align="center" gutterBottom>
             {props.isAddMode
               ? "Création de l'entreprise"
               : "Modification de l'entreprise"}

@@ -16,12 +16,21 @@ const changeOrder = (partyId , data) => {
     return http.post(`parties/${partyId}/customer-service/orders/change`,data);
 }
 
+const acceptOrder = (partyId , data) => {
+    return http.post(`parties/${partyId}/customer-service/orders/accept`,data);
+}
+
+const getDocumentForOrderChange = (partyId, orderId) => {
+    return http.get(`parties/${partyId}/customer-service/orders/${orderId}/prep-change-document`);
+};
 
 const OrderCustomerService= {
     getSentOrders,
     placeOrder,
     cancelOrder,
     changeOrder,
+    acceptOrder,
+    getDocumentForOrderChange
 };
 
 export default OrderCustomerService;

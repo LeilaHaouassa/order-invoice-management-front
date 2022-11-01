@@ -11,8 +11,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-
-import * as VscIcons from "react-icons/vsc";
 import * as AiIcons from "react-icons/ai";
 
 import { Button } from "@material-ui/core";
@@ -112,7 +110,7 @@ const PartyList = (props) => {
           <Link to="/app/parties/add">
             <Button
               variant="contained"
-              size="large"
+              size="small"
               className={classes.containedButton}
             >
               Ajouter une entreprise
@@ -126,12 +124,3 @@ const PartyList = (props) => {
 };
 
 export default PartyList;
-
-{
-  /*In case there are more details to show about partys */
-}
-{
-  /* <TableCell align="center">
-                    <VscIcons.VscOpenPreview ></VscIcons.VscOpenPreview>
-                  </TableCell> */
-}

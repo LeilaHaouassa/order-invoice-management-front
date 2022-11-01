@@ -8,6 +8,7 @@ export const retrieveProducts = () => async (dispatch) => {
       type: actionTypes.GET_PRODUCTS,
       payload: res.data,
     });
+    return Promise.resolve(res.data);
   } catch (err) {
     throw err;
   }

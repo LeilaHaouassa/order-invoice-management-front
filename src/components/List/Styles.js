@@ -11,10 +11,10 @@ export const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(3),
     },
     distanceForTableBloc: {
-      marginInline: theme.spacing(5),
+      marginInline: theme.spacing(3),
     },
     table: {
-      minWidth: 500,
+      minWidth: 700,
     },
     containedButton: {
       color: theme.palette.getContrastText("#9CC5EB"),

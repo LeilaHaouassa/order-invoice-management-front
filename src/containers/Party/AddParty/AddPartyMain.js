@@ -86,6 +86,7 @@ export default function AddPartyMain() {
                   type="submit"
                   variant="contained"
                   color="primary"
+                  size="small"
                   className={classes.button}
                 >
                   submit
@@ -97,6 +98,7 @@ export default function AddPartyMain() {
                     type="submit"
                     variant="contained"
                     color="primary"
+                    size="small"
                     className={classes.button}
                   >
                     cancel

@@ -2,44 +2,70 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import useStyles from "../../../components/Form/AddFormStyles";
-import * as partyActions from "../../../store/actions/parties";
-import * as productActions from "../../../store/actions/products";
-import * as orderActions from "../../../store/actions/orders";
+import useStyles from "../../../../components/Form/AddFormStyles";
+import * as productActions from "../../../../store/actions/products";
+import * as orderActions from "../../../../store/actions/orders";
 import ValidationSchema from "./FormModel/ValidationSchema";
 import FormInitialValues from "./FormModel/FormInitialValues";
-import FormLayout from "../../../components/Form/FormLayout/FormLayout";
+import FormLayout from "../../../../components/Form/FormLayout/FormLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import SendOrderForm from "./SendOrderForm";
-import AddMultiOrderLine from "../AddMultiOrderLine";
+import AddDetailForm from "./AddDetailForm";
+import AddMultiOrderLine from "../../AddMultiOrderLine";
 
-function SendOrderMain() {
+function AddDetailMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const parties = useSelector((state) => state.partyReducer.partiesRef);
   const products = useSelector((state) => state.productReducer.products);
-  let { partyId } = useParams();
+  let { orderId, partyId } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
-  const [anticipatedTotalVar, setAnticipatedTotalVar] = useState(0);
+  const [initialValues, setInitialValues] = useState(FormInitialValues);
+  const [legalTotalVar, setLegalTotalVar] = useState(0);
   const nav = useNavigate();
 
+  const updateLegalTotalVar = (value) => {
+    setLegalTotalVar(value);
+  };
+
   useEffect(() => {
-    dispatch(partyActions.retrieveOtherParties(partyId));
-    dispatch(productActions.retrieveProducts());
+    dispatch(productActions.retrieveProducts()).then((products) =>
+      dispatch(orderActions.getNegotiationDocument(partyId, orderId))
+        .then((data) => {
+          console.log(data);
+          setLegalTotalVar(
+            data.anticipatedMonetaryTotal.payableAmount.amountContent
+          );
+          FormInitialValues.orderLine = [...data.orderLine];
+          console.log(products);
+          FormInitialValues.orderLine.forEach((orderLine) => {
+            let index = products.findIndex((product) => {
+              return (
+                product.name.textContent ===
+                orderLine.lineItem.item.name.textContent
+              );
+            });
+            orderLine.lineItem.item =products[index];
+          });
+          setInitialValues(FormInitialValues);
+        })
+        .catch((err) => {
+          setErrorMessage(err.message);
+          console.log(err);
+        })
+    );
   }, []);
 
   async function _submitForm(values, actions) {
-    values.anticipatedMonetaryTotal.payableAmount.amountContent =
-      anticipatedTotalVar;
-    placeOrder(values, actions);
+    values.legalMonetaryTotal.payableAmount.amountContent = legalTotalVar;
+    values.orderReference[0].technicalId = orderId;
+    AddDetail(values, actions);
   }
 
-  async function placeOrder(values, actions) {
-    dispatch(orderActions.placeOrder(partyId, values))
+  async function AddDetail(values, actions) {
+    dispatch(orderActions.addDetail(partyId, values))
       .then(() => {
         actions.setSubmitting(true);
-        nav(`/app/parties/${partyId}/customer-side/orders`);
+        nav(`/app/parties/${partyId}/supplier-side/orders`);
       })
       .catch((e) => {
         setErrorMessage(e.message);
@@ -52,31 +78,33 @@ function SendOrderMain() {
     <FormLayout>
       <React.Fragment>
         <Formik
-          initialValues={FormInitialValues}
+          initialValues={initialValues}
           validationSchema={ValidationSchema}
           onSubmit={_submitForm}
+          enableReinitialize={true}
         >
           {({ values, setValues }) => (
             <Form>
               <Grid container spacing={3}>
-                <SendOrderForm parties={parties} errorMessage={errorMessage} />
+                <AddDetailForm errorMessage={errorMessage} />
 
                 <AddMultiOrderLine
                   products={products}
                   values={values}
                   setValues={setValues}
-                  anticipatedTotalVar={anticipatedTotalVar}
-                  setAnticipatedTotalVar={setAnticipatedTotalVar}
+                  legalTotalVar={legalTotalVar}
+                  updateLegalTotalVar={updateLegalTotalVar}
                 />
 
                 <Grid item xs={12} container justifyContent="flex-end">
                   <div className={classes.wrapper}>
                     <Button
                       onClick={() =>
-                        nav(`/app/parties/${partyId}/customer-side/orders`)
+                        nav(`/app/parties/${partyId}/supplier-side/orders`)
                       }
                       variant="contained"
                       color="primary"
+                      size="small"
                       className={classes.button}
                     >
                       Retour
@@ -87,6 +115,7 @@ function SendOrderMain() {
                       type="submit"
                       variant="contained"
                       color="primary"
+                      size="small"
                       className={classes.button}
                     >
                       Envoyer
@@ -102,4 +131,4 @@ function SendOrderMain() {
   );
 }
 
-export default SendOrderMain;
+export default AddDetailMain;

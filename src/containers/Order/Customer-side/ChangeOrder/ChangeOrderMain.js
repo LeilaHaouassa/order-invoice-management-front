@@ -2,31 +2,55 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import useStyles from "../../../components/Form/AddFormStyles";
-import * as partyActions from "../../../store/actions/parties";
-import * as productActions from "../../../store/actions/products";
-import * as orderActions from "../../../store/actions/orders";
+import useStyles from "../../../../components/Form/AddFormStyles";
+import * as partyActions from "../../../../store/actions/parties";
+import * as productActions from "../../../../store/actions/products";
+import * as orderActions from "../../../../store/actions/orders";
 import ValidationSchema from "./FormModel/ValidationSchema";
 import FormInitialValues from "./FormModel/FormInitialValues";
-import FormLayout from "../../../components/Form/FormLayout/FormLayout";
+import FormLayout from "../../../../components/Form/FormLayout/FormLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ChangeOrderForm from "./ChangeOrderForm";
-import AddMultiOrderLine from "../AddMultiOrderLine";
+import AddMultiOrderLine from "../../AddMultiOrderLine";
 
 function ChangeOrderMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const parties = useSelector((state) => state.partyReducer.partiesRef);
   const products = useSelector((state) => state.productReducer.products);
-  let { orderId,partyId } = useParams();
+  let { orderId, partyId } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
+  const [initialValues, setInitialValues] = useState(FormInitialValues);
   const [anticipatedTotalVar, setAnticipatedTotalVar] = useState(0);
   const nav = useNavigate();
 
   useEffect(() => {
-    dispatch(partyActions.retrieveOtherParties(partyId));
-    dispatch(productActions.retrieveProducts());
+    dispatch(productActions.retrieveProducts()).then((products) => {
+      dispatch(orderActions.getDocumentForOrderChange(partyId, orderId))
+        .then((data) => {
+          console.log(data);
+          setAnticipatedTotalVar(
+            data.legalMonetaryTotal.payableAmount.amountContent
+          );
+          FormInitialValues.orderLine = [...data.orderLine];
+          console.log(products);
+          FormInitialValues.orderLine.forEach((orderLine) => {
+            let index = products.findIndex((product) => {
+              return (
+                product.name.textContent ===
+                orderLine.lineItem.item.name.textContent
+              );
+            });
+            orderLine.lineItem.item = products[index];
+          });
+          setInitialValues(FormInitialValues);
+          setErrorMessage('');
+        })
+        .catch((err) => {
+          setErrorMessage(err.message);
+          console.log(err);
+        });
+    });
   }, []);
 
   async function _submitForm(values, actions) {
@@ -60,7 +84,7 @@ function ChangeOrderMain() {
           {({ values, setValues }) => (
             <Form>
               <Grid container spacing={3}>
-                <ChangeOrderForm parties={parties} errorMessage={errorMessage} />
+                <ChangeOrderForm errorMessage={errorMessage} />
 
                 <AddMultiOrderLine
                   products={products}
@@ -78,6 +102,7 @@ function ChangeOrderMain() {
                       }
                       variant="contained"
                       color="primary"
+                      size="small"
                       className={classes.button}
                     >
                       Retour
@@ -88,6 +113,7 @@ function ChangeOrderMain() {
                       type="submit"
                       variant="contained"
                       color="primary"
+                      size="small"
                       className={classes.button}
                     >
                       Envoyer

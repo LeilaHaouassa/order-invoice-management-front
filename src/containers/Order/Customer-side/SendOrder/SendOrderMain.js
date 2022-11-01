@@ -2,35 +2,41 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import useStyles from "../../../components/Form/AddFormStyles";
-import * as partyActions from "../../../store/actions/parties";
-import * as orderActions from "../../../store/actions/orders";
+import useStyles from "../../../../components/Form/AddFormStyles";
+import * as partyActions from "../../../../store/actions/parties";
+import * as productActions from "../../../../store/actions/products";
+import * as orderActions from "../../../../store/actions/orders";
 import ValidationSchema from "./FormModel/ValidationSchema";
 import FormInitialValues from "./FormModel/FormInitialValues";
-import FormLayout from "../../../components/Form/FormLayout/FormLayout";
+import FormLayout from "../../../../components/Form/FormLayout/FormLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import CancelOrderForm from "./CancelOrderForm";
+import SendOrderForm from "./SendOrderForm";
+import AddMultiOrderLine from "../../AddMultiOrderLine";
 
-function CancelOrderMain() {
+function SendOrderMain() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const parties = useSelector((state) => state.partyReducer.partiesRef);
-  let { orderId, partyId } = useParams();
+  const products = useSelector((state) => state.productReducer.products);
+  let { partyId } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
+  const [anticipatedTotalVar, setAnticipatedTotalVar] = useState(0);
   const nav = useNavigate();
 
   useEffect(() => {
     dispatch(partyActions.retrieveOtherParties(partyId));
+    dispatch(productActions.retrieveProducts());
   }, []);
 
   async function _submitForm(values, actions) {
-    values.orderReference[0].technicalId = orderId;
-    CancelOrder(values, actions);
+    values.anticipatedMonetaryTotal.payableAmount.amountContent =
+      anticipatedTotalVar;
+    placeOrder(values, actions);
   }
 
-  async function CancelOrder(values, actions) {
-    dispatch(orderActions.cancelOrder(partyId, values))
+  async function placeOrder(values, actions) {
+    dispatch(orderActions.placeOrder(partyId, values))
       .then(() => {
         actions.setSubmitting(true);
         nav(`/app/parties/${partyId}/customer-side/orders`);
@@ -50,12 +56,17 @@ function CancelOrderMain() {
           validationSchema={ValidationSchema}
           onSubmit={_submitForm}
         >
-
+          {({ values, setValues }) => (
             <Form>
               <Grid container spacing={3}>
-                <CancelOrderForm
-                  parties={parties}
-                  errorMessage={errorMessage}
+                <SendOrderForm parties={parties} errorMessage={errorMessage} />
+
+                <AddMultiOrderLine
+                  products={products}
+                  values={values}
+                  setValues={setValues}
+                  anticipatedTotalVar={anticipatedTotalVar}
+                  setAnticipatedTotalVar={setAnticipatedTotalVar}
                 />
 
                 <Grid item xs={12} container justifyContent="flex-end">
@@ -66,6 +77,7 @@ function CancelOrderMain() {
                       }
                       variant="contained"
                       color="primary"
+                      size="small"
                       className={classes.button}
                     >
                       Retour
@@ -76,6 +88,7 @@ function CancelOrderMain() {
                       type="submit"
                       variant="contained"
                       color="primary"
+                      size="small"
                       className={classes.button}
                     >
                       Envoyer
@@ -84,11 +97,11 @@ function CancelOrderMain() {
                 </Grid>
               </Grid>
             </Form>
-
+          )}
         </Formik>
       </React.Fragment>
     </FormLayout>
   );
 }
 
-export default CancelOrderMain;
+export default SendOrderMain;

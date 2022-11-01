@@ -15,29 +15,46 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
 import Button from "@mui/material/Button";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams ,useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/orders";
 import getActionType from "./getActionType";
 
 const OrderHistoryListForCustomer = () => {
   const classes = useStyles();
-  const history = useSelector((state) => state.orderCustomerReducer.history);
-  const orders = useSelector((state) => state.orderCustomerReducer.orders);
-  const dispatch = useDispatch();
   let { partyId, orderId } = useParams();
+  const history = useSelector((state) => state.orderReducer.history);
+  const orders = useSelector((state) => state.orderReducer.orders);
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     dispatch(actions.getOrderById(orderId));
     dispatch(actions.getOrderHistory(orderId));
-    
   }, []);
+
+  const getActionDoer = (element) => {
+    switch(getActionType(element.actionType)){
+      case "confirmer": case "refuser": case "négocier":
+        return element.sellerSupplierParty.party.partyName.name.textContent;break;
+      default:
+        return element.buyerCustomerParty.party.partyName.name.textContent;break;
+    }
+  }
+
+  const decideReturnPath = (pathname) => {
+    if(pathname.includes("customer-side")){
+      return `/app/parties/${partyId}/customer-side/orders`
+    }else{
+      return `/app/parties/${partyId}/supplier-side/orders`
+    }
+  }
 
   return (
     <React.Fragment>
       <div className={classes.distanceForTableBloc}>
         <div className={classes.distanceForTitle}>
-          <Typography component="h2" variant="h6" gutterBottom>
+          <Typography component="h6" variant="h4" gutterBottom>
             Historique de cette commande:
           </Typography>
         </div>
@@ -46,6 +63,7 @@ const OrderHistoryListForCustomer = () => {
             <TableHead>
               <TableRow border={1}>
                 <StyledTableCell align="center">Action</StyledTableCell>
+                <StyledTableCell align="center">Actionneur</StyledTableCell>
                 <StyledTableCell align="center">ID</StyledTableCell>
                 <StyledTableCell align="center">Date</StyledTableCell>
                 <StyledTableCell align="center">Temps</StyledTableCell>
@@ -59,6 +77,9 @@ const OrderHistoryListForCustomer = () => {
                   <StyledTableRow key={order.technicalId}>
                     <TableCell align="center">
                       {getActionType(order?.actionType)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {order.buyerCustomerParty.party.partyName.name.textContent}
                     </TableCell>
                     <TableCell align="center">
                       {order?.id?.identifierContent}
@@ -82,6 +103,9 @@ const OrderHistoryListForCustomer = () => {
                       {getActionType(element?.actionType)}
                     </TableCell>
                     <TableCell align="center">
+                      {getActionDoer(element)}
+                    </TableCell>
+                    <TableCell align="center">
                       {element?.id?.identifierContent}
                     </TableCell>
                     <TableCell align="center">
@@ -98,10 +122,10 @@ const OrderHistoryListForCustomer = () => {
         </TableContainer>
 
         <div className={classes.distanceForAddButton}>
-          <Link to={`/app/parties/${partyId}/customer-side/orders`}>
+          <Link to={decideReturnPath(pathname)}>
             <Button
               variant="contained"
-              size="large"
+              size="small"
               className={classes.containedButton}
             >
               Retourner

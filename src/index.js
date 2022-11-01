@@ -14,11 +14,13 @@ import DateAdapter from "@mui/lab/AdapterDateFns";
 import frLocale from "date-fns/locale/fr";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import thunk from "redux-thunk";
-import orderCustomerReducer from "./store/reducers/OrderCustomerReducer";
+import orderReducer from "./store/reducers/OrderReducer";
+import settingsReducer from "./store/reducers/SettingReducer";
 
 const middleware = [thunk];
 const rootReducer = combineReducers({
-  orderCustomerReducer: orderCustomerReducer,
+  settingsReducer: settingsReducer,
+  orderReducer: orderReducer,
   productReducer: productReducer,
   partyReducer: partyReducer,
 });
@@ -30,15 +32,15 @@ export const store = createStore(
 );
 
 ReactDOM.render(
-  // <React.StrictMode>
-  // <LocalizationProvider dateAdapter={DateAdapter} locale={frLocale}>
+  <React.StrictMode>
+  {/* <LocalizationProvider dateAdapter={DateAdapter} locale={frLocale}> */}
   <Provider store={store}>
     <Router>
       <App />
     </Router>
   </Provider>,
-  //</LocalizationProvider>,
-  // </React.StrictMode>,
+  {/* </LocalizationProvider>, */}
+ </React.StrictMode>,
   document.getElementById("root")
 );
 

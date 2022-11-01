@@ -12,7 +12,7 @@ export default function SendOrderForm(props) {
     <React.Fragment>
       <Grid item container spacing={3}>
         <Grid item xs={12}>
-          <Typography component="h5" variant="h5" align="center" gutterBottom>
+          <Typography component="h3" variant="h4" align="center" gutterBottom>
             Création du Bon de Commande
           </Typography>
         </Grid>
