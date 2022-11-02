@@ -81,6 +81,7 @@ const ReceivedOrderList = () => {
                 <StyledTableCell align="center">Négocier</StyledTableCell>
                 <StyledTableCell align="center">Accepter</StyledTableCell>
                 <StyledTableCell align="center">Rejetter</StyledTableCell>
+                <StyledTableCell align="center">Facture</StyledTableCell>
                 <StyledTableCell align="center">Historique</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -178,7 +179,18 @@ const ReceivedOrderList = () => {
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      {/* // A bug is created here  */}
+                      <Button
+                        size="small"
+                        onClick={() =>
+                          nav(
+                            `/app/parties/${partyId}/supplier-side/orders/${order.technicalId}/send-invoice`
+                          )
+                        }
+                      >
+                        Envoyer
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
                       <Button
                         size="small"
                         onClick={() =>
@@ -196,17 +208,6 @@ const ReceivedOrderList = () => {
           </Table>
         </TableContainer>
 
-        <div className={classes.distanceForAddButton}>
-          <Link to={`/app/parties/${partyId}/supplier-side/orders/send`}>
-            <Button
-              variant="contained"
-              size="small"
-              className={classes.containedButton}
-            >
-              Envoyer un bon de commande
-            </Button>
-          </Link>
-        </div>
       </div>
     </React.Fragment>
   );

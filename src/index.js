@@ -16,9 +16,11 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import thunk from "redux-thunk";
 import orderReducer from "./store/reducers/OrderReducer";
 import settingsReducer from "./store/reducers/SettingReducer";
+import invoiceReducer from "./store/reducers/InvoiceReducer";
 
 const middleware = [thunk];
 const rootReducer = combineReducers({
+  invoiceReducer: invoiceReducer,
   settingsReducer: settingsReducer,
   orderReducer: orderReducer,
   productReducer: productReducer,

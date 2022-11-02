@@ -13,6 +13,9 @@ import OrderHistoryList from "../../containers/Order/OrderHistoryList";
 import ReceivedOrderList from "../../containers/Order/Supplier-side/ReceivedOrderList";
 import RejectOrderMain from "../../containers/Order/Supplier-side/RejectOrder/RejectOrderMain";
 import AddDetailMain from "../../containers/Order/Supplier-side/AddDetail/AddDetailMain";
+import SendInvoiceMain from "../../containers/Invoice/Supplier-side/SendInvoice/SendInvoiceMain";
+import SentInvoiceList from "../../containers/Invoice/Supplier-side/SentInvoiceList";
+import ReceivedInvoiceList from "../../containers/Invoice/Customer-side/ReceivedInvoiceList";
 
 const Layout = (props) => {
   return (
@@ -64,10 +67,21 @@ const Layout = (props) => {
                 path="parties/:partyId/supplier-side/orders/:orderId/add-detail"
                 element={<AddDetailMain />}
               />
-
+              <Route
+                path="parties/:partyId/supplier-side/orders/:orderId/send-invoice"
+                element={<SendInvoiceMain />}
+              />
               <Route
                 path="parties/:partyId/supplier-side/orders/:orderId/history"
                 element={<OrderHistoryList />}
+              />
+              <Route
+                path="parties/:partyId/supplier-side/invoices"
+                element={<SentInvoiceList />}
+              />
+              <Route
+                path="parties/:partyId/customer-side/invoices"
+                element={<ReceivedInvoiceList />}
               />
             </Routes>
           </Col>
