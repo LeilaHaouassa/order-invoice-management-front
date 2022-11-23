@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions/parties";
 
-import { useStyles, StyledTableCell, StyledTableRow } from "../../components/List/Styles";
+import {
+  useStyles,
+  StyledTableCell,
+  StyledTableRow,
+} from "../../components/List/Styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -12,23 +16,29 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import * as AiIcons from "react-icons/ai";
-
 import { Button } from "@material-ui/core";
 import DeleteParty from "./DeleteParty";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const PartyList = (props) => {
   const classes = useStyles();
-
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [idOfClickedRow, setIdOfClickedRow] = useState("");
-  const showDeleteModal = () => setDeleteModal(!deleteModal);
   const parties = useSelector((state) => state.partyReducer.parties);
+  const { isLoggedIn } = useSelector((state) => state.authReducer.isLoggedIn);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(actions.retrieveParties());
   }, []);
+
+  // if (!isLoggedIn) {
+  //   return <Navigate to={"/auth"}/>
+  // }
+
+  const handleOpenDeleteDialog = () => {
+    setOpenDeleteDialog(true);
+  };
 
   return (
     <React.Fragment>
@@ -78,27 +88,18 @@ const PartyList = (props) => {
                       >
                         <AiIcons.AiOutlineEdit></AiIcons.AiOutlineEdit>
                       </Link>
-                      {/* <Button
-                        variant="contained"
-                        size="small"
-                        className={classes.containedButton}
-                        onClick={()=>{
-                          navigate(`/app/parties/edit`,{ state: { technicalIdOfPartyToUpdate: party.technicalId } });
-                        }}
-                      >edit</Button> */}
                       /
                       <AiIcons.AiOutlineDelete
                         onClick={() => {
-                          showDeleteModal();
+                          handleOpenDeleteDialog();
                           setIdOfClickedRow(party.technicalId);
                         }}
                       ></AiIcons.AiOutlineDelete>
-                      {deleteModal && (
-                        <DeleteParty
-                          showDeleteModal={showDeleteModal}
-                          partyTechnicalId={idOfClickedRow}
-                        ></DeleteParty>
-                      )}
+                      <DeleteParty
+                        openDeleteDialog={openDeleteDialog}
+                        setOpenDeleteDialog={setOpenDeleteDialog}
+                        partyTechnicalId={idOfClickedRow}
+                      ></DeleteParty>
                     </TableCell>
                   </StyledTableRow>
                 ))}

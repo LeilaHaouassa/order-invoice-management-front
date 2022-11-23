@@ -1,7 +1,7 @@
 import * as actionTypes from "../actions/types";
 
 const initialState = {
-  settings: []
+  settings: false
 };
 
 const SettingsReducer = (state = initialState, action) => {
@@ -10,6 +10,10 @@ const SettingsReducer = (state = initialState, action) => {
     case actionTypes.GET_SETTINGS:
       return {
         ...state,
+        settings: action.payload,
+      };
+    case actionTypes.SETTINGS_CHANGED:
+      return {
         settings: action.payload,
       };
     default:

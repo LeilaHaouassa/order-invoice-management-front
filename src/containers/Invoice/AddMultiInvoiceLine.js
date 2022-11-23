@@ -54,23 +54,13 @@ function AddMultiInvoiceLine(props) {
   return (
     <Grid item container columnSpacing={4}>
       <div className={classes.distanceForTableBloc}>
-        <Grid item container spacing={10}>
-          <Grid item xs={12} sm={10} justifyContent="flex-start">
-            <Typography
-              variant="h6"
-              align="left"
-              marginTop={2}
-              marginBottom={2}
-            >
-              Lignes de commande:
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={2} container>
+        <Grid item container justifyContent="flex-end">
+          <Grid item xs={12} sm={2} container justifyContent="flex-end">
             <Button
               variant="contained"
               color="primary"
               size="small"
-              style={{ margin: "auto" }}
+              style={{ marginBottom: 10 }}
               onClick={(e) =>
                 addInvoiceLineField(e, props.values, props.setValues)
               }
@@ -172,12 +162,15 @@ function AddMultiInvoiceLine(props) {
         </TableContainer>
       </div>
 
-      <Grid item xs={12} container justifyContent="center" marginTop={4}>
-        <Grid item xs={12}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Montant Total{" "}
-            {props.legalTotalVar}{" "}
-            TND
+      <Grid item xs={12} container marginTop={4}>
+        <Grid item xs={9}>
+          <Typography variant="h5" align="right" marginRight={5} gutterBottom >
+            Montant Total(TND)
+          </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography variant="h5" align="right" marginRight={5} gutterBottom>
+            {props.legalTotalVar}
           </Typography>
         </Grid>
       </Grid>

@@ -1,47 +1,53 @@
-import React from "react";
-import ReactDom from "react-dom";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../store/actions/parties";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
-function DeleteParty(props) {
+function DeleteParty({
+  openDeleteDialog,
+  setOpenDeleteDialog,
+  partyTechnicalId,
+}) {
   const dispatch = useDispatch();
-  
 
   const removeParty = (partyTechnicalId) => {
-    dispatch(actions.deleteParty(partyTechnicalId)).catch((e) => {
+    dispatch(actions.deleteParty(partyTechnicalId))
+    .catch((e) => {
       console.log(e);
     });
   };
 
-  return ReactDom.createPortal(
-    <div className="modalBackground">
-      <div className="modalContainer">
-        <div className="closeBtn">
-          <button onClick={props.showDeleteModal}>X</button>
-        </div>
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
 
-        <div className="head">
-          <h1>Attention</h1>
-        </div>
-        <div className="body">
-          <p>Êtes-vous sûr que vous voulez supprimer cette entreprise?</p>
-        </div>
-        <div className="footer">
-          <button
+  return (
+    <>
+      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+        <DialogTitle>Attention</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Êtes-vous sûr que vous voulez supprimer cette entreprise?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
             onClick={() => {
-              removeParty(props.partyTechnicalId);
-              props.showDeleteModal();
+              removeParty(partyTechnicalId);
+              handleCloseDeleteDialog();
             }}
           >
             Supprimer
-          </button>
-          <button id="cancelBtn" onClick={props.showDeleteModal}>
-            Annuler
-          </button>
-        </div>
-      </div>
-    </div>,
-    document.getElementById("portal")
+          </Button>
+          <Button onClick={handleCloseDeleteDialog}>Annuler</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 

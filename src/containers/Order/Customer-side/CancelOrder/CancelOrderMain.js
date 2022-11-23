@@ -6,15 +6,20 @@ import useStyles from "../../../../components/Form/AddFormStyles";
 import * as orderActions from "../../../../store/actions/orders";
 import ValidationSchema from "./FormModel/ValidationSchema";
 import FormInitialValues from "./FormModel/FormInitialValues";
-import FormLayout from "../../../../components/Form/FormLayout/FormLayout";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import CancelOrderForm from "./CancelOrderForm";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Field } from "formik";
+import { TextField } from "formik-mui";
+import Alert from "@mui/material/Alert";
 
-function CancelOrderMain() {
+function CancelOrderMain({ openCancelDialog, setOpenCancelDialog, orderId , partyId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  let { orderId, partyId } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
   const nav = useNavigate();
 
@@ -22,6 +27,10 @@ function CancelOrderMain() {
     values.orderReference[0].technicalId = orderId;
     CancelOrder(values, actions);
   }
+
+  const handleCloseCancelDialog = () => {
+    setOpenCancelDialog(false);
+  };
 
   async function CancelOrder(values, actions) {
     dispatch(orderActions.cancelOrder(partyId, values))
@@ -37,52 +46,69 @@ function CancelOrderMain() {
   }
 
   return (
-    <FormLayout>
-      <React.Fragment>
+    <React.Fragment>
+      <Dialog open={openCancelDialog} onClose={handleCloseCancelDialog}>
         <Formik
           initialValues={FormInitialValues}
           validationSchema={ValidationSchema}
           onSubmit={_submitForm}
         >
-
-            <Form>
-              <Grid container spacing={3}>
-                <CancelOrderForm
-                  errorMessage={errorMessage}
-                />
-
-                <Grid item xs={12} container justifyContent="flex-end">
-                  <div className={classes.wrapper}>
-                    <Button
-                      onClick={() =>
-                        nav(`/app/parties/${partyId}/customer-side/orders`)
-                      }
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      className={classes.button}
-                    >
-                      Retour
-                    </Button>
-                  </div>
-                  <div className={classes.wrapper}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      className={classes.button}
-                    >
-                      Envoyer
-                    </Button>
-                  </div>
+          <Form>
+            <DialogTitle>Annulation du Bon de Commande</DialogTitle>
+            <DialogContent>
+              {errorMessage && (
+                <Grid item xs={12}>
+                  <Alert severity="error">{errorMessage}</Alert>
                 </Grid>
-              </Grid>
-            </Form>
+              )}
+              <DialogContentText>
+                Pour confirmer l'annulation de cette commande, veuillez entrer
+                un identifiant pour l'annulation avec la raison d'annulation.
+              </DialogContentText>
+              <p></p>
+              <Field
+                component={TextField}
+                name="id.identifierContent"
+                label="Identifiant de la demande d'annulation"
+                type="text"
+                fullWidth
+              />
+              <p></p>
+              <Field
+                component={TextField}
+                name="cancellationNote[0].textContent"
+                label="Raison d'annulation"
+                type="text"
+                fullWidth
+                multiline
+                maxRows={3}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={handleCloseCancelDialog}
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+              >
+                Retour
+              </Button>
 
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+              >
+                Envoyer
+              </Button>
+            </DialogActions>
+          </Form>
         </Formik>
-      </React.Fragment>
-    </FormLayout>
+      </Dialog>
+    </React.Fragment>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   useStyles,
@@ -24,6 +24,14 @@ import * as settingsActions from "../../../store/actions/settings";
 import getOrderStatus from "../getOrderStatus";
 import AcceptOrderForm from "./AcceptOrder/AcceptOrderForm";
 
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import IconButton from "@mui/material/IconButton";
+import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
+
+
 const ReceivedOrderList = () => {
   const classes = useStyles();
   const orders = useSelector((state) => state.orderReducer.orders);
@@ -31,7 +39,7 @@ const ReceivedOrderList = () => {
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState("");
   const [idOfClickedRow, setIdOfClickedRow] = useState("");
-  const [openAcceptDialog, setOpenAcceptDialog] = React.useState(false);
+  const [openAcceptDialog, setOpenAcceptDialog] = useState(false);
   const nav = useNavigate();
   let { partyId } = useParams();
 
@@ -58,7 +66,7 @@ const ReceivedOrderList = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div className={classes.distanceForTableBloc}>
         <div className={classes.distanceForTitle}>
           <Typography component="h6" variant="h4" gutterBottom>
@@ -106,20 +114,21 @@ const ReceivedOrderList = () => {
                     </TableCell>
                     <TableCell align="center">
                       {checkIfActionIsPossible(order.status) ? (
-                        <Button
+                        <IconButton
                           size="small"
+                          color="primary"
                           onClick={() =>
                             nav(
                               `/app/parties/${partyId}/supplier-side/orders/${order.technicalId}/add-detail`
                             )
                           }
                         >
-                          Négocier
-                        </Button>
+                          <ModeEditOutlineOutlinedIcon />
+                        </IconButton>
                       ) : (
-                        <Button size="small" disabled={true}>
-                          Négocier
-                        </Button>
+                        <IconButton size="small" disabled={true}>
+                          <ModeEditOutlineOutlinedIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                     <TableCell align="center">
@@ -128,15 +137,16 @@ const ReceivedOrderList = () => {
                           {" "}
                           {settings.responseToBuyerIsRequiredWhenAcceptingOrder ? (
                             <>
-                              <Button
+                              <IconButton
                                 onClick={() => {
                                   handleOpenAcceptDialog();
                                   setIdOfClickedRow(order.technicalId);
                                 }}
+                                color="primary"
                                 size="small"
                               >
-                                Accepter
-                              </Button>
+                                <TaskAltOutlinedIcon />
+                              </IconButton>
                               <AcceptOrderForm
                                 openAcceptDialog={openAcceptDialog}
                                 setOpenAcceptDialog={setOpenAcceptDialog}
@@ -144,72 +154,87 @@ const ReceivedOrderList = () => {
                               />
                             </>
                           ) : (
-                            <Button
+                            <IconButton
                               onClick={() =>
                                 acceptWithNoFurtherAction(order.technicalId)
                               }
                               size="small"
+                              color="primary"
                             >
-                              Accepter
-                            </Button>
+                              <TaskAltOutlinedIcon />
+                            </IconButton>
                           )}{" "}
                         </>
                       ) : (
-                        <Button size="small" disabled={true}>
-                          Accepter
-                        </Button>
+                        <IconButton size="small" disabled={true}>
+                          <TaskAltOutlinedIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                     <TableCell align="center">
                       {checkIfActionIsPossible(order.status) ? (
-                        <Button
+                        <IconButton
                           size="small"
+                          color="primary"
                           onClick={() =>
                             nav(
                               `/app/parties/${partyId}/supplier-side/orders/${order.technicalId}/reject`
                             )
                           }
                         >
-                          Rejetter
-                        </Button>
+                          <CancelOutlinedIcon />
+                        </IconButton>
                       ) : (
-                        <Button size="small" disabled={true}>
-                          Rejetter
-                        </Button>
+                        <IconButton size="small" disabled={true}>
+                          <CancelOutlinedIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      <Button
+                      <IconButton
                         size="small"
+                        color="primary"
                         onClick={() =>
                           nav(
                             `/app/parties/${partyId}/supplier-side/orders/${order.technicalId}/send-invoice`
                           )
                         }
                       >
-                        Envoyer
-                      </Button>
+                        <IosShareOutlinedIcon/>
+                      </IconButton>
                     </TableCell>
                     <TableCell align="center">
-                      <Button
+                      <IconButton
                         size="small"
+                        color="primary"
                         onClick={() =>
                           nav(
                             `/app/parties/${partyId}/supplier-side/orders/${order.technicalId}/history`
                           )
                         }
                       >
-                        Historique
-                      </Button>
+                        <HistoryOutlinedIcon />
+                      </IconButton>
                     </TableCell>
                   </StyledTableRow>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
-
+        <div className={classes.distanceForAddButton}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() =>
+              nav(`/app/parties/${partyId}/supplier-side/orders/send-invoice`)
+            }
+            className={classes.containedButton}
+          >
+            Nouvelle facture
+          </Button>
+        </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

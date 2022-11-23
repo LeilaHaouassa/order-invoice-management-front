@@ -53,8 +53,6 @@ function AcceptOrderForm({ openAcceptDialog, setOpenAcceptDialog, orderId }) {
           onSubmit={_submitForm}
         >
           <Form>
-            {/* DONT FORGET THE ERROR MESSAGE */}
-
             <DialogTitle>Confirmation du bon de commande</DialogTitle>
             <DialogContent>
               {errorMessage && (
@@ -77,7 +75,7 @@ function AcceptOrderForm({ openAcceptDialog, setOpenAcceptDialog, orderId }) {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseAcceptDialog} size="small">
-                Cancel
+                Annuler
               </Button>
               <Button type="submit" size="small">
                 Envoyer

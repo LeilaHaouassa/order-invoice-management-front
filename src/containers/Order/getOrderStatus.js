@@ -5,7 +5,7 @@ const getOrderStatus = (status) => {
         case "REJECTED":
             return "refus";
         case "PENDING":
-            return "en attendant";
+            return "en attente";
         case "CHANGED":
             return "modifié";
         case "NEGOTIATING":

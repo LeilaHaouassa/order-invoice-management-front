@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import {
   useStyles,
@@ -15,13 +15,19 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
-import * as AiIcons from "react-icons/ai";
 
 import Button from "@mui/material/Button";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as orderActions from "../../../store/actions/orders";
 import getOrderStatus from "../getOrderStatus";
+import CancelOrderMain from "./CancelOrder/CancelOrderMain";
+
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import IconButton from "@mui/material/IconButton";
+import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 
 const SentOrderList = () => {
   const classes = useStyles();
@@ -30,6 +36,8 @@ const SentOrderList = () => {
   let { partyId } = useParams();
   const nav = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [idOfClickedRow, setIdOfClickedRow] = useState("");
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
 
   useEffect(() => {
     dispatch(orderActions.retrieveSentOrders(partyId));
@@ -52,8 +60,12 @@ const SentOrderList = () => {
     return status === "CONFIRMED" || status === "NEGOTIATING";
   };
 
+  const handleOpenCancelDialog = () => {
+    setOpenCancelDialog(true);
+  };
+
   return (
-    <React.Fragment>
+    <>
       <div className={classes.distanceForTableBloc}>
         <div className={classes.distanceForTitle}>
           <Typography component="h6" variant="h4" gutterBottom>
@@ -100,52 +112,62 @@ const SentOrderList = () => {
                     </TableCell>
                     <TableCell align="center">
                       {checkIfActionIsPossible(order.status) ? (
-                        <Button
+                        <IconButton
                           onClick={() => acceptOrder(order.technicalId)}
                           size="small"
+                          color="primary"
                         >
-                          Accepter
-                        </Button>
+                          <TaskAltOutlinedIcon />
+                        </IconButton>
                       ) : (
-                        <Button disabled={true} size="small">
-                          Accepter
-                        </Button>
+                        <IconButton disabled={true} size="small">
+                          <TaskAltOutlinedIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                     <TableCell align="center">
                       {checkIfChangeIsPossible(order.status) ? (
-                        <Button
+                        <IconButton
                           size="small"
+                          color="primary"
                           onClick={() =>
                             nav(
                               `/app/parties/${partyId}/customer-side/orders/${order.technicalId}/change`
                             )
                           }
                         >
-                          Modifier
-                        </Button>
+                          <ModeEditOutlineOutlinedIcon />
+                        </IconButton>
                       ) : (
-                        <Button disabled={true} size="small">
-                          Modifier
-                        </Button>
+                        <IconButton disabled={true} size="small">
+                          <ModeEditOutlineOutlinedIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                     <TableCell align="center">
                       {checkIfActionIsPossible(order.status) ? (
-                        <Button
-                          size="small"
-                          onClick={() =>
-                            nav(
-                              `/app/parties/${partyId}/customer-side/orders/${order.technicalId}/cancel`
-                            )
-                          }
-                        >
-                          Annuler
-                        </Button>
+                        <>
+                          <IconButton
+                            size="small"
+                            color="primary"
+                            onClick={() => {
+                              handleOpenCancelDialog();
+                              setIdOfClickedRow(order.technicalId);
+                            }}
+                          >
+                            <CancelOutlinedIcon />
+                          </IconButton>
+                          <CancelOrderMain
+                            openCancelDialog={openCancelDialog}
+                            setOpenCancelDialog={setOpenCancelDialog}
+                            orderId={idOfClickedRow}
+                            partyId={partyId}
+                          />
+                        </>
                       ) : (
-                        <Button disabled={true} size="small">
-                          Annuler
-                        </Button>
+                        <IconButton disabled={true} size="small">
+                          <CancelOutlinedIcon />
+                        </IconButton>
                       )}
                     </TableCell>
                     <TableCell align="center">
@@ -157,7 +179,7 @@ const SentOrderList = () => {
                           )
                         }
                       >
-                        Historique
+                        <HistoryOutlinedIcon />
                       </Button>
                     </TableCell>
                   </StyledTableRow>
@@ -167,18 +189,19 @@ const SentOrderList = () => {
         </TableContainer>
 
         <div className={classes.distanceForAddButton}>
-          <Link to={`/app/parties/${partyId}/customer-side/orders/send`}>
-            <Button
-              variant="contained"
-              size="small"
-              className={classes.containedButton}
-            >
-              Envoyer un bon de commande
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() =>
+              nav(`/app/parties/${partyId}/customer-side/orders/send`)
+            }
+            className={classes.containedButton}
+          >
+            Nouvelle commande
+          </Button>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

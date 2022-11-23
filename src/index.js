@@ -17,9 +17,12 @@ import thunk from "redux-thunk";
 import orderReducer from "./store/reducers/OrderReducer";
 import settingsReducer from "./store/reducers/SettingReducer";
 import invoiceReducer from "./store/reducers/InvoiceReducer";
+import authReducer from "./store/reducers/security/AuthReducer";
+import setup from "./services/security/SetupInterceptors";
 
 const middleware = [thunk];
 const rootReducer = combineReducers({
+  authReducer: authReducer,
   invoiceReducer: invoiceReducer,
   settingsReducer: settingsReducer,
   orderReducer: orderReducer,
@@ -33,6 +36,8 @@ export const store = createStore(
   
 );
 
+setup(store);
+
 ReactDOM.render(
   <React.StrictMode>
   {/* <LocalizationProvider dateAdapter={DateAdapter} locale={frLocale}> */}
@@ -40,7 +45,7 @@ ReactDOM.render(
     <Router>
       <App />
     </Router>
-  </Provider>,
+  </Provider>
   {/* </LocalizationProvider>, */}
  </React.StrictMode>,
   document.getElementById("root")
