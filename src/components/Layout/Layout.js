@@ -35,10 +35,10 @@ const Layout = (props) => {
           <Col>
             <Routes>
               <Route path="home" element={<Dashboard />} />
+              <Route path="parties/add" element={<AddPartyMain />} />
               <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
                 {console.log(isLoggedIn)}
                 <Route path="parties" element={<PartyList />} />
-                <Route path="parties/add" element={<AddPartyMain />} />
                 <Route
                   path="parties/edit/:technicalIdOfPartyToUpdate"
                   element={<AddPartyMain />}

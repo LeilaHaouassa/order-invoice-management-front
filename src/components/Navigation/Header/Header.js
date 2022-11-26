@@ -4,11 +4,15 @@ import React, { useState, useEffect } from "react";
 import logo from "../../../assets/proxym.png";
 import Sidebar from "../Sidebar/Sidebar";
 import SettingsPopper from "./SettingsPopper";
+import Grid from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   header: {
     backgroundColor: "#5BA0BF",
   },
+  image: {
+    marginInline: "30px",
+  }
 }));
 
 function Header() {
@@ -17,9 +21,11 @@ function Header() {
   const displayDesktop = () => {
     return (
       <Toolbar className={classes.header}>
-        <Sidebar />
 
-        <img src={logo} height={80} width={140} alt="This is logo of  proxym" />
+        <Sidebar />
+        <div className={classes.image}>
+        <img src={logo} height={70} 
+                width= "auto" alt="This is logo of  proxym" /></div>
 
         <SettingsPopper />
       </Toolbar>
